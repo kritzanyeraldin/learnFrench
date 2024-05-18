@@ -1,11 +1,19 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
-import { WelcomePageRoute } from "./routes";
+import { SignIn, SignOut, WelcomePageRoute } from "./routes";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <WelcomePageRoute />,
+  },
+  {
+    path: "/signIn",
+    element: <SignIn />,
+  },
+  {
+    path: "/signOut",
+    element: <SignOut />,
   },
 ]);
 
