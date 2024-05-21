@@ -1,0 +1,29 @@
+[33mcommit 69c864e3210984a7453cc51d3fce7048495f0528[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: kritzanyeraldin <kritzan.sullca.e@uni.pe>
+Date:   Mon May 20 21:30:54 2024 -0500
+
+    Sign In
+
+[33mcommit b9cebf285b696d88b34a5df2dda8f7b96e9a5a6a[m
+Author: kritzanyeraldin <kritzan.sullca.e@uni.pe>
+Date:   Mon May 20 18:33:58 2024 -0500
+
+    Configure relative paths
+
+[33mcommit c7de2422c23f9b31483c0a85dc5a29d194fa48d1[m
+Author: kritzanyeraldin <kritzan.sullca.e@uni.pe>
+Date:   Sat May 18 19:19:38 2024 -0500
+
+    Theme
+
+[33mcommit fc16838943579746b8241bd44221ee2a398c0a3b[m
+Author: kritzanyeraldin <kritzan.sullca.e@uni.pe>
+Date:   Sat May 18 18:17:14 2024 -0500
+
+    WelcomePage
+
+[33mcommit fc2af162ad19a299064e22e0381671d2f4a636f2[m
+Author: kritzanyeraldin <kritzan.sullca.e@uni.pe>
+Date:   Sat May 18 17:28:24 2024 -0500
+
+    welcome

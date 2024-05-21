@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import { SignIn, SignOut, WelcomePageRoute } from "./routes";
 import { Home } from "./routes/Internal";
+import { InternalLayout } from "./layouts";
 
 const router = createBrowserRouter([
   {
@@ -16,9 +17,15 @@ const router = createBrowserRouter([
     path: "/signOut",
     element: <SignOut />,
   },
+
   {
-    path: "/home",
-    element: <Home />,
+    element: <InternalLayout />,
+    children: [
+      {
+        path: "/home",
+        element: <Home />,
+      },
+    ],
   },
 ]);
 
