@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import { SignIn, SignOut, WelcomePageRoute } from "./routes";
+import { Home } from "./routes/Internal";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/signOut",
     element: <SignOut />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
   },
 ]);
 
