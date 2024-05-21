@@ -25,6 +25,22 @@ const router = createBrowserRouter([
         path: "/home",
         element: <Home />,
       },
+      {
+        path: "/grammar",
+        element: <div>grammar</div>,
+      },
+      {
+        path: "/vocabulary",
+        element: <div>vocabulary</div>,
+      },
+      {
+        path: "/statistic",
+        element: <div>sta</div>,
+      },
+      {
+        path: "/settings",
+        element: <div>asd</div>,
+      },
     ],
   },
 ]);

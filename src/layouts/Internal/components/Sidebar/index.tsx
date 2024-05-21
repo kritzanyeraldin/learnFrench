@@ -1,9 +1,16 @@
-import { Box, Flex, NavLink, Text, Title } from "@mantine/core";
+import { Box, Divider, Flex, NavLink, Title } from "@mantine/core";
+import { Link, useLocation } from "react-router-dom";
+import { Fragment } from "react/jsx-runtime";
+import { Icon } from "~/components";
 
 const SideBar = () => {
+  const { pathname: currentPath } = useLocation();
+
   type BarSectionItem = {
     id: string;
     label: string;
+    path: string;
+    icon: React.ReactNode;
   };
   type BarSection = {
     id: string;
@@ -18,14 +25,26 @@ const SideBar = () => {
         {
           id: "Inicio",
           label: "Inicio",
+          path: "/home",
+          icon: <Icon type="book" weight="duotone" />,
         },
         {
-          id: "Revisar",
-          label: "Revisar",
+          id: "Gramatica",
+          label: "Gramatica",
+          path: "/grammar",
+          icon: <Icon type="grammar" weight="duotone" />,
         },
         {
           id: "Vocabulario",
           label: "Vocabulario",
+          path: "/vocabulary",
+          icon: <Icon type="vocabulary" weight="duotone" />,
+        },
+        {
+          id: "Estadisticas",
+          label: "Estadisticas",
+          path: "/statistic",
+          icon: <Icon type="statistic" weight="duotone" />,
         },
       ],
     },
@@ -36,26 +55,39 @@ const SideBar = () => {
         {
           id: "Ajustes",
           label: "Ajustes",
+          path: "/settings",
+          icon: <Icon type="settings" weight="duotone" />,
         },
       ],
     },
   ];
+
   return (
-    <Flex direction="column">
-      <Title>Learn French</Title>
-      {BarSections.map((section) => (
-        <Box bg="red" key={section.id}>
-          <Title>{section.label}</Title>
-          {section.items.map((item) => (
-            <NavLink
-              key={section.id}
-              href="#required-for-focus"
-              label={item.label}
-              //   leftSection={}
-            />
-          ))}
-        </Box>
-      ))}
+    <Flex direction="column" bg="#bdbdbd" w={300} p="md" h="100vh">
+      <Title order={2} mt="md">
+        Learn French
+      </Title>
+      {BarSections.map((section, sectionIndex) => {
+        const isLast = sectionIndex === BarSections.length - 1;
+        return (
+          <Fragment key={section.id}>
+            <Box mt="xl">
+              <Title order={4}>{section.label}</Title>
+              {section.items.map((item, index) => (
+                <NavLink
+                  key={section.id}
+                  component={Link}
+                  to={item.path}
+                  label={item.label}
+                  active={currentPath === item.path}
+                  leftSection={item.icon}
+                />
+              ))}
+            </Box>
+            {!isLast && <Divider color="#3a3a3a" size="sm" mt="lg" />}
+          </Fragment>
+        );
+      })}
     </Flex>
   );
 };
