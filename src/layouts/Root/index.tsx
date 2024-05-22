@@ -1,12 +1,7 @@
-import { Flex } from "@mantine/core";
 import { Outlet } from "react-router-dom";
 
 const Root = () => {
-  return (
-    <Flex w={300} bg="red">
-      <Outlet />
-    </Flex>
-  );
+  return <Outlet />;
 };
 
 export default Root;

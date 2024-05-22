@@ -1,4 +1,4 @@
-import { Coffee,Books, BookOpenText, UserSound, GearSix, ChartLine } from "@phosphor-icons/react";
+import { Coffee,Books, SignOut ,BookOpenText, ListBullets ,UserSound, GearSix, ChartLine } from "@phosphor-icons/react";
 
 export const icons = {
     coffee: Coffee,
@@ -7,6 +7,8 @@ export const icons = {
     vocabulary: UserSound, 
     statistic: ChartLine,
     settings: GearSix,
+    signOut: SignOut ,
+    listLevels: ListBullets,
 
 } as const
 

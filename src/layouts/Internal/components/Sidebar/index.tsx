@@ -73,7 +73,7 @@ const SideBar = () => {
           <Fragment key={section.id}>
             <Box mt="xl">
               <Title order={4}>{section.label}</Title>
-              {section.items.map((item, index) => (
+              {section.items.map((item) => (
                 <NavLink
                   key={section.id}
                   component={Link}
