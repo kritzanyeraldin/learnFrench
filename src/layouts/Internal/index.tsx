@@ -1,4 +1,4 @@
-import { Flex, Stack } from "@mantine/core";
+import { Box, Flex, Stack } from "@mantine/core";
 import { Sidebar, Topbar } from "./components";
 import { Outlet } from "react-router-dom";
 
@@ -8,7 +8,9 @@ const Internal = () => {
       <Sidebar />
       <Stack flex={1}>
         <Topbar />
-        <Outlet />
+        <Box px="lg">
+          <Outlet />
+        </Box>
       </Stack>
     </Flex>
   );
