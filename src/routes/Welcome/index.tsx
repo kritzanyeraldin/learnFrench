@@ -14,7 +14,7 @@ import welcomeImage from "~/assets/images/welcome_image.jpg";
 const WelcomePage = () => {
   const navigate = useNavigate();
   return (
-    <Flex direction="row" w="100vw" h="100vh" justify="center">
+    <Flex direction="row" w="100vw" h="100vh" justify="center" bg="#e4e9daca">
       <Stack align="stretch" justify="center" flex={4} p={50}>
         <Title order={1} size={72}>
           Learn French

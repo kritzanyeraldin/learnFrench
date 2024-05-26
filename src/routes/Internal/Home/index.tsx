@@ -2,12 +2,14 @@ import {
   Box,
   Button,
   Flex,
+  Group,
   Modal,
   Popover,
   Progress,
+  RingProgress,
   Stack,
   Stepper,
-  StepperProps,
+  StepperStepProps,
   Text,
   Title,
 } from "@mantine/core";
@@ -34,19 +36,102 @@ const lesson = [
   },
 ];
 
+type SubLevel = {
+  id: string;
+  name: string;
+  chapters: string;
+};
+
+type Level = {
+  id: string;
+  name: string;
+  sublevels: SubLevel[];
+};
+
+const levels: Level[] = [
+  {
+    id: "A",
+    name: "A",
+    sublevels: [
+      {
+        id: "A1",
+        name: "Nombre",
+        chapters: "3",
+      },
+      {
+        id: "A2",
+        name: "Nombre",
+        chapters: "3",
+      },
+      {
+        id: "A3",
+        name: "Nombre",
+        chapters: "3",
+      },
+    ],
+  },
+  {
+    id: "B",
+    name: "B",
+    sublevels: [
+      {
+        id: "B1",
+        name: "Nombre",
+        chapters: "3",
+      },
+      {
+        id: "B2",
+        name: "Nombre",
+        chapters: "3",
+      },
+    ],
+  },
+
+  {
+    id: "C",
+    name: "C",
+    sublevels: [
+      {
+        id: "C1",
+        name: "Nombre",
+        chapters: "3",
+      },
+    ],
+  },
+];
+
 const Home = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [active, setActive] = useState(1);
   return (
-    <Flex direction="column" w="100%" mx="auto" maw={620} bg="red">
+    <Flex direction="column" w="100%" mx="auto" maw={620}>
       <Modal
+        bga="ToraeaBay.8"
         opened={opened}
         onClose={close}
-        title="Authentication"
         centered
         transitionProps={{ transition: "pop" }}
       >
-        {/* Modal content */}
+        <Stack bg="#f9f9f7">
+          {levels.map((level) => (
+            <Group key={level.id} justify="center">
+              {level.sublevels.map((sublevel) => (
+                <Box key={sublevel.id}>
+                  <RingProgress
+                    sections={[{ value: 40, color: "ToreaBay.8" }]}
+                    label={
+                      <Title order={2} ta="center">
+                        {sublevel.id}
+                      </Title>
+                    }
+                  />
+                  <Text ta="center">{sublevel.name}</Text>
+                  <Text ta="center">{sublevel.chapters} capitulos</Text>
+                </Box>
+              ))}
+            </Group>
+          ))}
+        </Stack>
       </Modal>
 
       <Button
@@ -57,30 +142,30 @@ const Home = () => {
         Open centered Modal
       </Button>
       {/* <Button onClick={() => navigate("/lesson")}> Hola</Button> */}
-      <Box bg="#a0a9dc">
-        <Title> Capitulo 1</Title>
+      <Box>
+        <Title order={2}> Capitulo 1</Title>
         <Text>40%</Text>
         <Progress value={40} />
         <Stepper
           active={active}
           orientation="vertical"
           iconSize={90}
-          bg="green"
+          // bg="green"
         >
-          {lesson.map((lesson) => {
+          {lesson.map((lesson) => (
             <Lesson
               key={lesson.id}
-              name={lesson.name}
+              label={lesson.name}
               description={lesson.description}
-            />;
-          })}
+            />
+          ))}
         </Stepper>
       </Box>
     </Flex>
   );
 };
 
-const Lesson = ({ ...props }: StepperProps) => {
+const Lesson = (props: StepperStepProps) => {
   return (
     <Popover
       withArrow
@@ -93,15 +178,14 @@ const Lesson = ({ ...props }: StepperProps) => {
         <Stepper.Step
           w="100%"
           styles={{
-            step: { padding: 8, background: "yellow" },
+            step: { padding: 8 },
             stepBody: {
               width: "100%",
               marginTop: 12,
             },
           }}
-          {props.label}
-          description={descripcion}
           completedIcon={<Icon type="coffee"></Icon>}
+          {...props}
         />
       </Popover.Target>
       <Popover.Dropdown>
