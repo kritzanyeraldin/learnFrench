@@ -1,12 +1,14 @@
-import { createTheme } from "@mantine/core";
+import { ColorPicker, Flex, createTheme } from "@mantine/core";
 
 const theme = createTheme({
   fontFamily: "ABeeZee",
+  primaryColor: "ToreaBay",
   colors: {
     ToreaBay: [
-      "#ffffff",
-      "#e7ecf4",
-      "#ced9e9",
+      // "#ffffff",
+      // "#e7ecf4",
+      // "#ced9e9",
+      "#DAE1EA",
       "#b6c6dd",
       "#9db3d2",
       "#85a1c7",
@@ -15,12 +17,12 @@ const theme = createTheme({
       "#3b68a5",
       "#23559a",
       "#0a428f",
-      "#093b81",
       "#083572",
+      "#093b81",
       "#072e64",
       "#062856",
       "#052148",
-      "#041a39",
+      // "#041a39",
       "#03142b",
       "#020d1d",
     ],
@@ -43,6 +45,19 @@ const theme = createTheme({
       "#0d0d38",
       "#0a0a2d",
       "#070722",
+    ],
+
+    White: [
+      "#fbfbfb",
+      "#fafafa",
+      "#f9f9f9",
+      "#fbfbfa",
+      "#f7f7f5",
+      "#ecebe7",
+      "#e0e0e0",
+      "#c7c7c7",
+      "#aeaeae",
+      "#959595",
     ],
   },
   components: {

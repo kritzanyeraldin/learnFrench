@@ -14,7 +14,7 @@ import welcomeImage from "~/assets/images/welcome_image.jpg";
 const WelcomePage = () => {
   const navigate = useNavigate();
   return (
-    <Flex direction="row" w="100vw" h="100vh" justify="center" bg="#e4e9daca">
+    <Flex direction="row" w="100vw" h="100vh" justify="center" bg="White.2">
       <Stack align="stretch" justify="center" flex={4} p={50}>
         <Title order={1} size={72}>
           Learn French
@@ -25,20 +25,10 @@ const WelcomePage = () => {
           pointed, ear-like structures on top of its heaasdasdaasdd,
         </Text>
         <Group>
-          <Button
-            variant="outline"
-            color="rgba(135, 135, 135, 1)"
-            // size="md"
-            // radius="md"
-            onClick={() => navigate("/signIn")}
-          >
+          <Button variant="outline" onClick={() => navigate("/signIn")}>
             Iniciar Sesion
           </Button>
-          <Button
-            variant="filled"
-            color="cyan"
-            onClick={() => navigate("/signOut")}
-          >
+          <Button variant="filled" onClick={() => navigate("/signOut")}>
             Registrarse
           </Button>
         </Group>

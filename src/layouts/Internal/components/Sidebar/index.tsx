@@ -75,7 +75,7 @@ const SideBar = () => {
               <Title order={4}>{section.label}</Title>
               {section.items.map((item) => (
                 <NavLink
-                  key={section.id}
+                  key={item.id}
                   component={Link}
                   to={item.path}
                   label={item.label}

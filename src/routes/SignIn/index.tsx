@@ -16,7 +16,7 @@ import ImagenSignIn from "~/assets/images/signIn.png";
 const SignIn = () => {
   const navigate = useNavigate();
   return (
-    <Flex direction="column" h="100vh" p="md">
+    <Flex direction="column" h="100vh" p="md" bg="White.2">
       <Group justify="flex-end">
         <Text>¿No tienes una cuenta?</Text>
         <Text>Registrate</Text>

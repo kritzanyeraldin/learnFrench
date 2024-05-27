@@ -4,14 +4,14 @@ import { Outlet } from "react-router-dom";
 
 const Internal = () => {
   return (
-    <Flex>
+    <Flex bg="White.2">
       <Sidebar />
-      <Stack flex={1}>
+      <Box pos="relative" h="100vh" flex={1} style={{ overflow: "auto" }}>
         <Topbar />
-        <Box px="lg">
+        <Flex px="lg">
           <Outlet />
-        </Box>
-      </Stack>
+        </Flex>
+      </Box>
     </Flex>
   );
 };

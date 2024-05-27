@@ -4,14 +4,17 @@ import { Icon } from "~/components";
 const TopBar = () => {
   return (
     <Flex
+      top={0}
+      pos="fixed"
       direction="row"
       h="64"
-      // bg="blue"
+      w="100%"
+      bg="White.4"
       justify="space-between"
       align="center"
       p="xl"
       // gap="lg"
-      style={{ borderBottom: "1px solid #c5c5c5" }}
+      style={{ borderBottom: "1px solid #c5c5c5", zIndex: 200 }}
     >
       <Title order={3}>Inicia una leccion</Title>
 
