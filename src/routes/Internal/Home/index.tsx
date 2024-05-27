@@ -374,18 +374,14 @@ const Home = () => {
         radius="lg"
         size="lg"
       >
-        <Stack bg="White.2">
-          <Group justify="center">
-            {Object.values(sublevels).map((sublevel) => (
+        <Group bg="White.2">
+          {Object.values(sublevels).map((sublevel) => (
+            <Stack justify="center" key={sublevel.id}>
               <Button
                 variant="transparent"
-                // onFocus=""
                 size="lg"
-                key={sublevel.id}
                 style={{ height: 200 }}
-                onClick={() => {
-                  setSelectedSubLevel(sublevel.id);
-                }}
+                onClick={() => setSelectedSubLevel(sublevel.id)}
               >
                 <Stack gap="1">
                   <RingProgress
@@ -404,9 +400,9 @@ const Home = () => {
                   </Text>
                 </Stack>
               </Button>
-            ))}
-          </Group>
-        </Stack>
+            </Stack>
+          ))}
+        </Group>
       </Modal>
 
       <Button

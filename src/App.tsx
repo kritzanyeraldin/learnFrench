@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import { SignIn, SignOut, WelcomePageRoute } from "./routes";
-import { Home } from "./routes/Internal";
+import { Grammar, Home, Vocabulary } from "./routes/Internal";
 import { InternalLayout, RootLayout } from "./layouts";
 
 const router = createBrowserRouter([
@@ -35,11 +35,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/grammar",
-            element: <div>grammar</div>,
+            element: <Grammar />,
           },
           {
             path: "/vocabulary",
-            element: <div>vocabulary</div>,
+            element: <Vocabulary />,
           },
           {
             path: "/statistic",
