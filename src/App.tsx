@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import { SignIn, SignOut, WelcomePageRoute } from "./routes";
-import { Grammar, Home, Vocabulary } from "./routes/Internal";
+import { Grammar, Home, Statistics, Vocabulary } from "./routes/Internal";
 import { InternalLayout, RootLayout } from "./layouts";
 
 const router = createBrowserRouter([
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/statistic",
-            element: <div>sta</div>,
+            element: <Statistics />,
           },
           {
             path: "/settings",
