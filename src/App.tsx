@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
-import { Forgot, SignIn, SignOut, WelcomePageRoute } from "./routes";
+import { RestorePassword, RestorePasswordSuccess, SignIn, SignUp, SignUpSuccess, WelcomePageRoute } from "./routes";
 import { Grammar, Home, Statistics, Vocabulary } from "./routes/Internal";
 import { InternalLayout, RootLayout } from "./layouts";
 
@@ -14,12 +14,20 @@ const router = createBrowserRouter([
     element: <SignIn />,
   },
   {
-    path: "/signOut",
-    element: <SignOut />,
+    path: "/signUp",
+    element: <SignUp />,
   },
   {
-    path: "/forgotPassword",
-    element: <div>ha</div>,
+    path: "/signUpSuccess",
+    element: <SignUpSuccess />,
+  },
+  {
+    path: "/restorePassword",
+    element: <RestorePassword />,
+  },
+  {
+    path: "/restorePasswordSuccess",
+    element: <RestorePasswordSuccess />,
   },
 
   {

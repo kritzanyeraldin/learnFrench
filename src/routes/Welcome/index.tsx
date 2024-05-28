@@ -28,7 +28,7 @@ const WelcomePage = () => {
           <Button variant="outline" onClick={() => navigate("/signIn")}>
             Iniciar Sesion
           </Button>
-          <Button variant="filled" onClick={() => navigate("/signOut")}>
+          <Button variant="filled" onClick={() => navigate("/signUp")}>
             Registrarse
           </Button>
         </Group>

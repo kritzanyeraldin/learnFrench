@@ -9,26 +9,24 @@ import {
   Text,
   TextInput,
   Title,
-  colorsTuple,
 } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
-import ImagenSignIn from "~/assets/images/signIn.svg";
+import ImagenSignIn from "~/assets/images/signUp.svg";
 
-const SignIn = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const { hovered: registerTextHovered, ref: registerTextRef } = useHover();
-  const { hovered: passwordTextHovered, ref: passwordTextRef } = useHover();
+  const { hovered: signInTextHovered, ref: signInTextRef } = useHover();
   return (
     <Flex direction="column" h="100vh" p="md" bg="White.2">
       <Group justify="flex-end">
-        <Text>¿No tienes una cuenta?</Text>
+        <Text>¿Ya tienes una cuenta?</Text>
         <Text
-          ref={registerTextRef}
-          c={registerTextHovered ? "ToreaBay.4" : "black"}
-          onClick={() => navigate("/signUp")}
+          ref={signInTextRef}
+          c={signInTextHovered ? "ToreaBay.4" : "black"}
+          onClick={() => navigate("/signIn")}
         >
-          Registrate
+          Inicia sesión
         </Text>
       </Group>
       <Group flex={1} justify="space-evenly" align="center">
@@ -44,7 +42,13 @@ const SignIn = () => {
         </Box>
         <Box w={500}>
           <Stack>
-            <Title>Iniciar Sesion</Title>
+            <Title>Crear una cuenta</Title>
+
+            <TextInput
+              label="Nombre Completo"
+              placeholder="John Smith"
+              inputWrapperOrder={["label", "error", "input", "description"]}
+            />
 
             <TextInput
               label="Correo Electronico"
@@ -57,18 +61,13 @@ const SignIn = () => {
               placeholder="Ingresa tu contraseña"
             />
 
-            <Group justify="flex-end">
-              <Text
-                ref={passwordTextRef}
-                c={passwordTextHovered ? "ToreaBay.4" : "black"}
-                onClick={() => navigate("/restorePassword")}
-                size="xs"
-              >
-                Olvidaste tu contraseña?
-              </Text>
-            </Group>
+            {/* <Group justify="flex-end">
+              <Text size="xs">Olvidaste tu contraseña?</Text>
+            </Group> */}
 
-            <Button onClick={() => navigate("/home")}>Ingresar</Button>
+            <Button onClick={() => navigate("/signUpSuccess")}>
+              Registrarse
+            </Button>
           </Stack>
         </Box>
       </Group>
@@ -76,4 +75,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
