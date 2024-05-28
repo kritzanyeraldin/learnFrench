@@ -63,8 +63,8 @@ const SideBar = () => {
   ];
 
   return (
-    <Flex direction="column" bg="#bdbdbd" w={300} p="md" h="100vh">
-      <Title order={2} mt="md">
+    <Flex direction="column" bg="#062756bf" w={300} p="md" h="100vh">
+      <Title order={2} mt="md" c="ToreaBay.15">
         Learn French
       </Title>
       {BarSections.map((section, sectionIndex) => {

@@ -11,7 +11,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import ImagenSignIn from "~/assets/images/signIn.png";
+import ImagenSignIn from "~/assets/images/signIn.svg";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const SignIn = () => {
           w={{
             base: 200,
             md: 400,
-            lg: 700,
+            lg: 500,
           }}
           visibleFrom="xs"
         >
