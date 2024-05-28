@@ -7,6 +7,7 @@ const TopBar = () => {
       top={0}
       pos="fixed"
       direction="row"
+      //
       h="64"
       w="100%"
       bg="White.4"
@@ -17,7 +18,7 @@ const TopBar = () => {
       // gap="lg"
       style={{ borderBottom: "1px solid #a4b9d4 ", zIndex: 200 }}
     >
-      <Title order={3} c="ToreaBay.13">
+      <Title order={3} c="ToreaBaygit.13">
         Inicia una leccion
       </Title>
 
