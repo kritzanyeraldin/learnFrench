@@ -110,17 +110,29 @@ const sublevels: Record<string, SubLevel> = {
 
 const data = [
   {
-    date: "Mar 22",
-    Apples: 2890,
-    Oranges: 2338,
-    Tomatoes: 2452,
+    level: "A1",
+    progress: 30,
   },
   {
-    date: "Mar 23",
-    Apples: 2756,
-    Oranges: 2103,
-    Tomatoes: 2402,
+    level: "A2",
+    progress: 40,
   },
+  {
+    level: "A3",
+    progress: 50,
+  },
+  {
+    level: "B1",
+    progress: 20,
+  },
+  {
+    level: "B2",
+    progress: 20,
+  },
+  {
+    level: "C1",
+    progress: 10,
+
 ];
 
 const Statistics = () => {
@@ -188,12 +200,17 @@ const Statistics = () => {
                     dataKey="id"
                     fz="h1"
                     fillOpacity={1}
-                    series={[{ name: "progress", color: "ToreaBay.6" }]}
+
+                    series={[{ name: "progress", color: "ToreaBay.5" }]}
+
                     // textColor="black"
 
                     // style={{fontWeight:}}
                     tickLine="xy"
                     gridAxis="xy"
+
+                    textColor="ToreaBay.6"
+
                   ></BarChart>
                 </Box>
               </Card>
@@ -203,19 +220,33 @@ const Statistics = () => {
       </Box>
       <Box m="sm" p="xs">
         <Title order={3}>General</Title>
-        <AreaChart
-          h={300}
-          data={data}
-          dataKey="date"
-          series={[
-            { name: "Apples", color: "indigo.6" },
-            { name: "Oranges", color: "blue.6" },
-            { name: "Tomatoes", color: "teal.6" },
-          ]}
-          curveType="linear"
-          tickLine="xy"
-          withDots={false}
-        />
+
+        <Card
+          mt="sm"
+          shadow="sm"
+          pt="xl"
+          p="xl"
+          component="a"
+          target="_blank"
+          bg="White.3"
+          // bg="#05214825"
+          withBorder
+          style={{ borderRadius: 12, borderWidth: "2px" }}
+          flex={1}
+        >
+          {/*"indigo.6" */}
+          <AreaChart
+            h={350}
+            data={data}
+            dataKey="level"
+            series={[{ name: "progress", color: "#a1cfe7" }]}
+            curveType="bump"
+            tickLine="xy"
+            withDots={false}
+            textColor="ToreaBay.6"
+          />
+        </Card>
+
       </Box>
     </Flex>
   );
