@@ -1,7 +1,9 @@
 import { Avatar, Flex, Menu, Title } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
 const TopBar = () => {
+  const navigate = useNavigate();
   return (
     <Flex
       top={0}
@@ -9,7 +11,7 @@ const TopBar = () => {
       direction="row"
       //
       h="64"
-      w="100%"
+      w="85%"
       bg="White.4"
       // bg="#062756bf"
       justify="space-between"
@@ -22,23 +24,23 @@ const TopBar = () => {
         Inicia una leccion
       </Title>
 
-      <Menu width={200} shadow="md" withArrow>
+      <Menu width={200} shadow="md" withArrow arrowSize={15}>
         <Menu.Target>
           {/* <Button>Toggle menu</Button> */}
-          <Avatar variant="filled" />
+          <Avatar size={45} variant="filled" color="ToreaBay.6" />
         </Menu.Target>
 
         <Menu.Dropdown>
           <Menu.Item
             component="a"
-            href="https://mantine.dev"
+            onClick={() => navigate("/profile")}
             leftSection={<Icon type="settings" weight="duotone" />}
           >
             Configurar Perfil
           </Menu.Item>
           <Menu.Item
             component="a"
-            href="https://mantine.dev"
+            onClick={() => navigate("/")}
             target="_blank"
             leftSection={<Icon type="signOut" weight="duotone" />}
           >

@@ -6,7 +6,13 @@ const Internal = () => {
   return (
     <Flex bg="White.4">
       <Sidebar />
-      <Box pos="relative" h="100vh" flex={1} style={{ overflow: "auto" }}>
+      <Box
+        pos="relative"
+        h="100vh"
+        flex={1}
+        style={{ overflow: "auto" }}
+        // bg="red"
+      >
         <Topbar />
         <Flex px="lg">
           <Outlet />

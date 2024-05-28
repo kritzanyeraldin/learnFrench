@@ -1,7 +1,21 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
-import { RestorePassword, RestorePasswordSuccess, SignIn, SignUp, SignUpSuccess, WelcomePageRoute } from "./routes";
-import { Grammar, Home, Statistics, Vocabulary } from "./routes/Internal";
+import {
+  RestorePassword,
+  RestorePasswordSuccess,
+  SignIn,
+  SignUp,
+  SignUpSuccess,
+  WelcomePageRoute,
+} from "./routes";
+import {
+  Grammar,
+  Home,
+  Profile,
+  Statistics,
+  Vocabulary,
+  Settings,
+} from "./routes/Internal";
 import { InternalLayout, RootLayout } from "./layouts";
 
 const router = createBrowserRouter([
@@ -59,7 +73,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/settings",
-            element: <div>asd</div>,
+            element: <Settings />,
+          },
+          {
+            path: "/profile",
+            element: <Profile />,
           },
         ],
       },

@@ -1,0 +1,29 @@
+.mantine-NavLink-root {
+    background-color: red;
+  
+    & .mantine-NavLink-label {
+      font-weight: bold;
+    }
+  
+    & .mantine-NavLink-label, & .mantine-NavLink-section {
+      color: rgba(211, 227, 253, 0.7);
+    }
+  
+    &:hover {
+      background-color: rgba(124,172,248,0.08) !important;
+    }
+  
+    &[data-active="true"] {
+      --bg: #0842a0;
+  
+  background-color: var(--bg);
+  
+      &:hover {
+        background-color: var(--bg) !important;
+      }
+  
+      & .mantine-NavLink-label, & .mantine-NavLink-section {
+        color: #d3e3fd;
+      }
+  }
+  }

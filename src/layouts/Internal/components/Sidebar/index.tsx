@@ -1,8 +1,9 @@
-import { Box, Divider, Flex, NavLink, Title } from "@mantine/core";
+import { Box, Divider, Flex, NavLink, Text, Title } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { Link, useLocation } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 import { Icon } from "~/components";
+import "./styles.css";
 
 const SideBar = () => {
   const { pathname: currentPath } = useLocation();
@@ -65,7 +66,7 @@ const SideBar = () => {
   ];
 
   return (
-    <Flex direction="column" bg="#0f375a" w={300} p="md" h="100vh">
+    <Flex direction="column" bg="#0e375a" w={300} p="md" h="100vh">
       <Title order={2} mt="md" c="rgb(211,227,253,0.7)">
         Learn French
       </Title>
@@ -73,12 +74,13 @@ const SideBar = () => {
         const isLast = sectionIndex === BarSections.length - 1;
         return (
           <Fragment key={section.id}>
-            <Box mt="xl">
-              <Title c="rgba(211,227,253,0.7)" order={6}>
+            <Box mt="lg">
+              <Text c="rgba(211,227,253,0.7)" size="sm">
                 {section.label}
-              </Title>
+              </Text>
               {section.items.map((item) => (
                 <NavLink
+                  m="xs"
                   key={item.id}
                   component={Link}
                   to={item.path}
@@ -92,7 +94,9 @@ const SideBar = () => {
                 />
               ))}
             </Box>
-            {!isLast && <Divider color="#3a3a3a" size="sm" mt="lg" />}
+            {!isLast && (
+              <Divider color="rgba(211, 227, 253, 0.469)" size="xs" mt="lg" />
+            )}
           </Fragment>
         );
       })}
