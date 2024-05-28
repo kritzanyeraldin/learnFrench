@@ -10,16 +10,24 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useHover } from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
-import ImagenSignIn from "~/assets/images/signIn.svg";
+import ImagenSignIn from "~/assets/images/signUp.svg";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { hovered: signInTextHovered, ref: signInTextRef } = useHover();
   return (
     <Flex direction="column" h="100vh" p="md" bg="White.2">
       <Group justify="flex-end">
         <Text>¿Ya tienes una cuenta?</Text>
-        <Text>Inicia sesión</Text>
+        <Text
+          ref={signInTextRef}
+          c={signInTextHovered ? "ToreaBay.4" : "black"}
+          onClick={() => navigate("/signIn")}
+        >
+          Inicia sesión
+        </Text>
       </Group>
       <Group flex={1} justify="space-evenly" align="center">
         <Box
@@ -57,7 +65,9 @@ const SignUp = () => {
               <Text size="xs">Olvidaste tu contraseña?</Text>
             </Group> */}
 
-            <Button onClick={() => navigate("/home")}>Registrarse</Button>
+            <Button onClick={() => navigate("/signUpSuccess")}>
+              Registrarse
+            </Button>
           </Stack>
         </Box>
       </Group>
@@ -66,4 +76,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
