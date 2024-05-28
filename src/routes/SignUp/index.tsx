@@ -34,7 +34,7 @@ const SignUp = () => {
           w={{
             base: 200,
             md: 400,
-            lg: 500,
+            lg: 450,
           }}
           visibleFrom="xs"
         >

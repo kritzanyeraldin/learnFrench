@@ -1,10 +1,12 @@
 import { Box, Divider, Flex, NavLink, Title } from "@mantine/core";
+import { useHover } from "@mantine/hooks";
 import { Link, useLocation } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 import { Icon } from "~/components";
 
 const SideBar = () => {
   const { pathname: currentPath } = useLocation();
+  const { hovered, ref } = useHover();
 
   type BarSectionItem = {
     id: string;
@@ -63,8 +65,8 @@ const SideBar = () => {
   ];
 
   return (
-    <Flex direction="column" bg="#062756bf" w={300} p="md" h="100vh">
-      <Title order={2} mt="md" c="ToreaBay.15">
+    <Flex direction="column" bg="#0f375a" w={300} p="md" h="100vh">
+      <Title order={2} mt="md" c="rgb(211,227,253,0.7)">
         Learn French
       </Title>
       {BarSections.map((section, sectionIndex) => {
@@ -72,7 +74,9 @@ const SideBar = () => {
         return (
           <Fragment key={section.id}>
             <Box mt="xl">
-              <Title order={4}>{section.label}</Title>
+              <Title c="rgba(211,227,253,0.7)" order={6}>
+                {section.label}
+              </Title>
               {section.items.map((item) => (
                 <NavLink
                   key={item.id}
@@ -81,6 +85,10 @@ const SideBar = () => {
                   label={item.label}
                   active={currentPath === item.path}
                   leftSection={item.icon}
+                  c="rgba(211,227,253,0.7)"
+                  // color="White.4"
+                  variant="light"
+                  color="#d3e3fd"
                 />
               ))}
             </Box>
