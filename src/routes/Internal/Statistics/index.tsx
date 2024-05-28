@@ -132,7 +132,7 @@ const data = [
   {
     level: "C1",
     progress: 10,
-  },
+
 ];
 
 const Statistics = () => {
@@ -200,13 +200,17 @@ const Statistics = () => {
                     dataKey="id"
                     fz="h1"
                     fillOpacity={1}
+
                     series={[{ name: "progress", color: "ToreaBay.5" }]}
+
                     // textColor="black"
 
                     // style={{fontWeight:}}
                     tickLine="xy"
                     gridAxis="xy"
+
                     textColor="ToreaBay.6"
+
                   ></BarChart>
                 </Box>
               </Card>
@@ -216,6 +220,7 @@ const Statistics = () => {
       </Box>
       <Box m="sm" p="xs">
         <Title order={3}>General</Title>
+
         <Card
           mt="sm"
           shadow="sm"
@@ -241,6 +246,7 @@ const Statistics = () => {
             textColor="ToreaBay.6"
           />
         </Card>
+
       </Box>
     </Flex>
   );
