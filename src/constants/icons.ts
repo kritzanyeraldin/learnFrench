@@ -1,4 +1,4 @@
-import {Sparkle,MicrophoneSlash,Microphone,XCircle, Eraser,SpeakerHigh, SpeakerSlash, Coffee,Books, SignOut ,BookOpenText, ListBullets ,UserSound, GearSix, ChartLine } from "@phosphor-icons/react";
+import {Check,PencilLine,Sparkle,MicrophoneSlash,Microphone,XCircle, Eraser,SpeakerHigh, SpeakerSlash, Coffee,Books, SignOut ,BookOpenText, ListBullets ,UserSound, GearSix, ChartLine } from "@phosphor-icons/react";
 
 export const icons = {
     coffee: Coffee,
@@ -16,6 +16,8 @@ export const icons = {
     microphone:Microphone,
     microphonoSlash:MicrophoneSlash,
     start:Sparkle,
+    pencil: PencilLine,
+    check: Check
 
 
 } as const

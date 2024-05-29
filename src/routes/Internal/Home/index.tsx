@@ -111,8 +111,8 @@ const sublevels: Record<string, SubLevel> = {
     chapters: [
       {
         id: "1",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 1",
+        progress: "10",
         lessons: [
           {
             id: "1",
@@ -121,7 +121,7 @@ const sublevels: Record<string, SubLevel> = {
           },
           {
             id: "2",
-            name: "Leccion1",
+            name: "Leccion2",
             description: "Descripcion",
           },
           {
@@ -133,7 +133,7 @@ const sublevels: Record<string, SubLevel> = {
       },
       {
         id: "2",
-        name: "asd ",
+        name: "Capitulo 2",
         progress: "40",
         lessons: [
           {
@@ -161,8 +161,8 @@ const sublevels: Record<string, SubLevel> = {
     chapters: [
       {
         id: "1",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 1 ",
+        progress: "80",
         lessons: [
           {
             id: "1",
@@ -183,8 +183,8 @@ const sublevels: Record<string, SubLevel> = {
       },
       {
         id: "2",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 2 ",
+        progress: "100",
         lessons: [
           {
             id: "1",
@@ -212,8 +212,8 @@ const sublevels: Record<string, SubLevel> = {
     chapters: [
       {
         id: "1",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 1",
+        progress: "25",
         lessons: [
           {
             id: "1",
@@ -234,8 +234,8 @@ const sublevels: Record<string, SubLevel> = {
       },
       {
         id: "2",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 2",
+        progress: "30",
         lessons: [
           {
             id: "1",
@@ -263,8 +263,8 @@ const sublevels: Record<string, SubLevel> = {
     chapters: [
       {
         id: "1",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 1 ",
+        progress: "30",
         lessons: [
           {
             id: "1",
@@ -285,8 +285,8 @@ const sublevels: Record<string, SubLevel> = {
       },
       {
         id: "2",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 2",
+        progress: "50",
         lessons: [
           {
             id: "1",
@@ -314,8 +314,8 @@ const sublevels: Record<string, SubLevel> = {
     chapters: [
       {
         id: "1",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 1 ",
+        progress: "10",
         lessons: [
           {
             id: "1",
@@ -336,8 +336,8 @@ const sublevels: Record<string, SubLevel> = {
       },
       {
         id: "2",
-        name: "asd ",
-        progress: "40",
+        name: "Capitulo 2 ",
+        progress: "20",
         lessons: [
           {
             id: "1",
@@ -365,6 +365,8 @@ const Home = () => {
 
   const [active, setActive] = useState(1);
   const [selectedSubLevel, setSelectedSubLevel] = useState("A1");
+  const levelTextDefault = "A1";
+  const [levelText, setLevelText] = useState<string>();
   return (
     <Flex direction="column" w="100%" mx="auto" maw={620} gap="sm" py={80}>
       <Modal
@@ -382,7 +384,11 @@ const Home = () => {
                 variant="transparent"
                 size="lg"
                 style={{ height: 200 }}
-                onClick={() => setSelectedSubLevel(sublevel.id)}
+                onClick={() => {
+                  setSelectedSubLevel(sublevel.id);
+                  setLevelText(sublevel.id);
+                  close(false);
+                }}
               >
                 <Stack gap="1">
                   <RingProgress
@@ -414,7 +420,7 @@ const Home = () => {
         justify="flex-start"
       >
         <Text size="lg" color="ToreaBay.15">
-          Level
+          {levelText ?? levelTextDefault}
         </Text>
       </Button>
 
@@ -485,9 +491,9 @@ const Lesson = (props: StepperStepProps) => {
           <Button bg="ToreaBay.5" onClick={() => navigate("/completeLesson")}>
             Iniciar Leccion
           </Button>
-          <Button bg="ToreaBay.5" onClick={() => navigate("/completeLesson")}>
+          {/* <Button bg="ToreaBay.5" onClick={() => navigate("/completeLesson")}>
             Reiniciar leccion
-          </Button>
+          </Button> */}
         </Stack>
       </Popover.Dropdown>
     </Popover>

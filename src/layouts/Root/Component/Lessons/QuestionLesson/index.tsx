@@ -8,6 +8,7 @@ import {
   Progress,
   Stack,
   Text,
+  TextInput,
   Title,
   Tooltip,
 } from "@mantine/core";
@@ -15,9 +16,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
-const RepeatSentenceLesson = () => {
+const QuestionLesson = () => {
   const navigate = useNavigate();
-  const [microphoneOn, setMicrophoneOn] = useState(false);
+  const [buttonLabel, setButtonLabel] = useState<string>();
+  const [inputChange, setInputChange] = useState(false);
   return (
     // <div></div>
     <Flex direction="column" w="100%" h="100vh" p="xl" bg="White.4">
@@ -32,7 +34,7 @@ const RepeatSentenceLesson = () => {
         // bg="#fda1a1"
       >
         <Group justify="space-between" mb="xl" p="sm">
-          <Title order={2}>Repite la siguiente oración</Title>
+          <Title order={2}>Completa la siguiente oracion</Title>
           <CloseButton
             style={{ borderRadius: 30, border: "2px solid #093b81" }}
             size="lg"
@@ -82,33 +84,33 @@ const RepeatSentenceLesson = () => {
             p="xl"
           >
             <Group justify="center" mb="sm">
-              <ActionIcon variant="subtle" aria-label="Settings">
-                <Icon type="speaker" size={30}></Icon>
-              </ActionIcon>
-              <Text>Bonjour! va ? </Text>
+              <Icon type="pencil" size={30}></Icon>
+              <Text>
+                ¿Qué puedes responder si alguien dice "¡Bonjour! Ca va?"
+              </Text>
             </Group>
             <Group justify="center" mb="sm">
-              <ActionIcon
-                variant="subtle"
-                aria-label="Settings"
-                onClick={() => setMicrophoneOn(true)}
-                disabled={microphoneOn}
-              >
-                <Icon type="microphone" size={30}></Icon>
-              </ActionIcon>
-              <Text c={microphoneOn ? "black" : "dimmed"}>Bonjour! va ? </Text>
+              <TextInput
+                // value={value}
+                onChange={() => setInputChange(true)}
+                w="400"
+                placeholder="Escribe tu respuesta aqui"
+                disabled={buttonLabel === "Siguiente"}
+              />
             </Group>
           </Box>
-          {microphoneOn && (
-            <Button
-              my="xl"
-              onClick={() => {
-                navigate("/questionLesson");
-              }}
-            >
-              Siguiente
-            </Button>
-          )}
+
+          <Button
+            my="xl"
+            onClick={() => {
+              if (inputChange) {
+                setButtonLabel("Siguiente");
+              }
+              if (buttonLabel === "Siguiente") navigate("/orderSentenceLesson");
+            }}
+          >
+            {buttonLabel ?? "Comprobar"}
+          </Button>
 
           <Stack w="100%" align="center" mt={120}>
             <Text>40%</Text>
@@ -121,7 +123,7 @@ const RepeatSentenceLesson = () => {
             />
           </Stack>
         </Box>
-        {microphoneOn && (
+        {buttonLabel === "Siguiente" && (
           <Box
             w="100%"
             mx="auto"
@@ -150,4 +152,4 @@ const RepeatSentenceLesson = () => {
   );
 };
 
-export default RepeatSentenceLesson;
+export default QuestionLesson;

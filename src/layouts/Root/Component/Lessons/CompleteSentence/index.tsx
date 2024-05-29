@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
   Title,
+  Tooltip,
 } from "@mantine/core";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +22,8 @@ const CompleteSentenceLesson = () => {
   const [completeText, setCompleteText] = useState<string>();
   const [verificate, setVerificate] = useState(false);
   const optionsDisabled = verificate && Boolean(completeText);
+  const commentTextDeafault = "Incorrecto";
+  const [commentText, setCommentText] = useState<string>();
   return (
     // <div></div>
     <Flex direction="column" w="100%" h="100vh" p="xl" bg="White.4">
@@ -49,7 +52,7 @@ const CompleteSentenceLesson = () => {
           p="xs"
           h={550}
           style={{
-            //   border: "2px solid #DAE1EA",
+            // border: "2px solid #DAE1EA",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -57,6 +60,26 @@ const CompleteSentenceLesson = () => {
             //   gap: "10",
           }}
         >
+          <Group m="sm" w="100%" align="center" justify="flex-end">
+            <Tooltip label="Gramatica">
+              <ActionIcon
+                variant="subtle"
+                aria-label="Settings"
+                onClick={() => navigate("/grammar")}
+              >
+                <Icon type="grammar" size={30}></Icon>
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Vocabulario">
+              <ActionIcon
+                variant="subtle"
+                aria-label="Settings"
+                onClick={() => navigate("/vocabulary")}
+              >
+                <Icon type="vocabulary" size={30}></Icon>
+              </ActionIcon>
+            </Tooltip>
+          </Group>
           <Box
             w="100%"
             mx="auto"
@@ -87,7 +110,10 @@ const CompleteSentenceLesson = () => {
             <Group justify="center" mt="xl" p="xs" gap="xl">
               <Button
                 disabled={optionsDisabled}
-                onClick={() => setCompleteText("opcion1")}
+                onClick={() => {
+                  setCompleteText("opcion1");
+                  setCommentText("Correcto");
+                }}
               >
                 opcion1
               </Button>
@@ -125,7 +151,7 @@ const CompleteSentenceLesson = () => {
             />
           </Stack>
         </Box>
-        {verificate && completeText === correctAnswer && (
+        {verificate && completeText !== commentTextDeafault && (
           <Box
             w="100%"
             mx="auto"
@@ -142,7 +168,7 @@ const CompleteSentenceLesson = () => {
               // gap: "10",
             }}
           >
-            <Text>Correcto</Text>
+            <Text>{commentText ?? commentTextDeafault}</Text>
             <Text>
               Ça va ?" is used to ask how it's going. The "ç" is pronounced with
               an "s" sound.
