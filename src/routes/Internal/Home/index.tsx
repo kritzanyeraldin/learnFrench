@@ -362,6 +362,7 @@ const sublevels: Record<string, SubLevel> = {
 
 const Home = () => {
   const [opened, { open, close }] = useDisclosure(false);
+
   const [active, setActive] = useState(1);
   const [selectedSubLevel, setSelectedSubLevel] = useState("A1");
   return (
@@ -450,6 +451,7 @@ const Home = () => {
 };
 
 const Lesson = (props: StepperStepProps) => {
+  const navigate = useNavigate();
   return (
     <Popover
       withArrow
@@ -480,8 +482,12 @@ const Lesson = (props: StepperStepProps) => {
             {props.label}
             {props.description}
           </>
-          <Button bg="ToreaBay.5">Iniciar Leccion</Button>
-          <Button bg="ToreaBay.5">Reiniciar leccion</Button>
+          <Button bg="ToreaBay.5" onClick={() => navigate("/completeLesson")}>
+            Iniciar Leccion
+          </Button>
+          <Button bg="ToreaBay.5" onClick={() => navigate("/completeLesson")}>
+            Reiniciar leccion
+          </Button>
         </Stack>
       </Popover.Dropdown>
     </Popover>

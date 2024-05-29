@@ -17,6 +17,10 @@ import {
   Settings,
 } from "./routes/Internal";
 import { InternalLayout, RootLayout } from "./layouts";
+import {
+  CompleteSentenceLesson,
+  RepeatSentenceLesson,
+} from "./layouts/Root/Component";
 
 const router = createBrowserRouter([
   {
@@ -48,8 +52,12 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        path: "/lesson",
-        element: <div> lesson</div>,
+        path: "/completeLesson",
+        element: <CompleteSentenceLesson />,
+      },
+      {
+        path: "/repeatLesson",
+        element: <RepeatSentenceLesson />,
       },
 
       {
