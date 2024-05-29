@@ -1,6 +1,8 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import {
+  LevelView,
+  QuestionLevel,
   RestorePassword,
   RestorePasswordSuccess,
   SignIn,
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
   {
     path: "/restorePasswordSuccess",
     element: <RestorePasswordSuccess />,
+  },
+  {
+    path: "/level",
+    element: <LevelView />,
+  },
+  {
+    path: "/questionlevel",
+    element: <QuestionLevel />,
   },
 
   {

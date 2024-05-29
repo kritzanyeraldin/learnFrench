@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  CloseButton,
   Flex,
   Group,
   RingProgress,
@@ -10,13 +11,14 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
-const CompleteLesson = () => {
+const LevelView = () => {
   const navigate = useNavigate();
+
   return (
-    // <div></div>
     <Flex direction="column" w="100%" h="100vh" p="xl" bg="White.4">
       <Flex
         direction="column"
@@ -28,6 +30,14 @@ const CompleteLesson = () => {
         gap="sm"
         // bg="#fda1a1"
       >
+        <Group justify="flex-end" mb="xl" p="sm">
+          {/* <Title order={2}>Completa la siguiente oracion</Title> */}
+          <CloseButton
+            style={{ borderRadius: 30, border: "2px solid #093b81" }}
+            size="lg"
+            onClick={() => navigate("/home")}
+          />
+        </Group>
         <Box
           w="100%"
           mx="auto"
@@ -58,40 +68,19 @@ const CompleteLesson = () => {
             }}
             p="xl"
           >
-            <Title order={2}>Leccion Terminada </Title>
+            <Title order={2}>Mide tu nivel </Title>
 
-            <RingProgress
-              m="sm"
-              sections={[{ value: 100, color: "teal" }]}
-              label={
-                <Center>
-                  <ActionIcon
-                    color="teal"
-                    variant="light"
-                    radius="xl"
-                    size="xl"
-                  >
-                    <Icon type="check"></Icon>
-                  </ActionIcon>
-                </Center>
-              }
-            />
-            <Stack justify="center" align="center">
-              <Text>Puntaje: 30</Text>
-              <Text>¡Felicitaciones!</Text>
-              <Text>Ya puede iniciar la siguiente leccion</Text>
-            </Stack>
+            <Group w="80%" mt="xl" justify="center">
+              <Button onClick={() => navigate("/questionLevel")}>
+                Iniciar
+              </Button>
+              <Button onClick={() => navigate("/home")}>Omitir</Button>
+            </Group>
           </Box>
-          <Group w="80%" mt="xl" justify="space-between">
-            <Button onClick={() => navigate("/completeLesson")}>
-              Reiniciar Leccion
-            </Button>
-            <Button onClick={() => navigate("/home")}>Siguiente Leccion</Button>
-          </Group>
         </Box>
       </Flex>
     </Flex>
   );
 };
 
-export default CompleteLesson;
+export default LevelView;
