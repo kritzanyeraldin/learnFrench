@@ -14,13 +14,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
-const CompleteSentenceLesson = () => {
-  const correctAnswer = "opcion1";
+const RepeatSentenceLesson = () => {
   const navigate = useNavigate();
-  const completeTextDefault = "________";
-  const [completeText, setCompleteText] = useState<string>();
-  const [verificate, setVerificate] = useState(false);
-  const optionsDisabled = verificate && Boolean(completeText);
+  const [microphoneOn, setMicrophoneOn] = useState(false);
   return (
     // <div></div>
     <Flex direction="column" w="100%" h="100vh" p="xl" bg="White.4">
@@ -68,52 +64,31 @@ const CompleteSentenceLesson = () => {
               <ActionIcon variant="subtle" aria-label="Settings">
                 <Icon type="speaker" size={30}></Icon>
               </ActionIcon>
-              <Text>Bonjour! </Text>
-              <Text td="underline" tt="uppercase">
-                {completeText ?? completeTextDefault}
-              </Text>
-              <Text>va ?</Text>
+              <Text>Bonjour! va ? </Text>
+            </Group>
+            <Group justify="center" mb="sm">
               <ActionIcon
-                disabled={optionsDisabled}
-                onClick={() => {
-                  setCompleteText(undefined);
-                }}
                 variant="subtle"
                 aria-label="Settings"
+                onClick={() => setMicrophoneOn(true)}
+                disabled={microphoneOn}
               >
-                <Icon type="eraser" size={30}></Icon>
+                <Icon type="microphone" size={30}></Icon>
               </ActionIcon>
-            </Group>
-            <Group justify="center" mt="xl" p="xs" gap="xl">
-              <Button
-                disabled={optionsDisabled}
-                onClick={() => setCompleteText("opcion1")}
-              >
-                opcion1
-              </Button>
-              <Button
-                disabled={optionsDisabled}
-                onClick={() => setCompleteText("opcion2")}
-              >
-                opcion2
-              </Button>
-              <Button
-                disabled={optionsDisabled}
-                onClick={() => setCompleteText("opcion3")}
-              >
-                opcion3
-              </Button>
+              <Text c={microphoneOn ? "black" : "dimmed"}>Bonjour! va ? </Text>
             </Group>
           </Box>
-          <Button
-            my="xl"
-            onClick={() => {
-              if (completeText) setVerificate(true);
-              if (optionsDisabled) navigate("/repeatLesson");
-            }}
-          >
-            {optionsDisabled ? "Siguiente" : "Comprobar"}
-          </Button>
+          {microphoneOn && (
+            <Button
+              my="xl"
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              Siguiente
+            </Button>
+          )}
+
           <Stack w="100%" align="center" mt={120}>
             <Text>40%</Text>
             <Progress
@@ -125,7 +100,7 @@ const CompleteSentenceLesson = () => {
             />
           </Stack>
         </Box>
-        {verificate && completeText === correctAnswer && (
+        {microphoneOn && (
           <Box
             w="100%"
             mx="auto"
@@ -154,4 +129,4 @@ const CompleteSentenceLesson = () => {
   );
 };
 
-export default CompleteSentenceLesson;
+export default RepeatSentenceLesson;
