@@ -14,10 +14,20 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
+import useSpeechRecognition from "./voice-interface";
 
 const RepeatSentenceLesson = () => {
   const navigate = useNavigate();
   const [microphoneOn, setMicrophoneOn] = useState(false);
+
+  const {
+    text,
+    isListening,
+    startListening,
+    stopListening,
+    hasRecognitionSupport,
+  } = useSpeechRecognition();
+
   return (
     // <div></div>
     <Flex direction="column" w="100%" h="100vh" p="xl" bg="White.4">
@@ -74,31 +84,39 @@ const RepeatSentenceLesson = () => {
               </ActionIcon>
             </Tooltip>
           </Group>
-          <Box
-            w="100%"
-            mx="auto"
-            maw={700}
-            style={{ border: "2px solid #DAE1EA", borderRadius: 6 }}
-            p="xl"
-          >
-            <Group justify="center" mb="sm">
-              <ActionIcon variant="subtle" aria-label="Settings">
-                <Icon type="speaker" size={30}></Icon>
-              </ActionIcon>
-              <Text>Bonjour! va ? </Text>
-            </Group>
-            <Group justify="center" mb="sm">
-              <ActionIcon
-                variant="subtle"
-                aria-label="Settings"
-                onClick={() => setMicrophoneOn(true)}
-                disabled={microphoneOn}
-              >
-                <Icon type="microphone" size={30}></Icon>
-              </ActionIcon>
-              <Text c={microphoneOn ? "black" : "dimmed"}>Bonjour! va ? </Text>
-            </Group>
-          </Box>
+          {hasRecognitionSupport ? (
+            <Box
+              w="100%"
+              mx="auto"
+              maw={700}
+              style={{ border: "2px solid #DAE1EA", borderRadius: 6 }}
+              p="xl"
+            >
+              <Group justify="center" mb="sm">
+                <ActionIcon variant="subtle" aria-label="Settings">
+                  <Icon type="speaker" size={30}></Icon>
+                </ActionIcon>
+                <Text>Bonjour! va ? </Text>
+              </Group>
+              <Group justify="center" mb="sm">
+                <ActionIcon
+                  variant="subtle"
+                  aria-label="Settings"
+                  // onClick={() => setMicrophoneOn(true)}
+                  onClick={startListening}
+                  disabled={microphoneOn}
+                >
+                  <Icon type="microphone" size={30}></Icon>
+                </ActionIcon>
+                <Text c={microphoneOn ? "black" : "dimmed"}>
+                  Bonjour! va ?{" "}
+                </Text>
+              </Group>
+            </Box>
+          ) : (
+            <Text>No tiene soporte uwu</Text>
+          )}
+
           {microphoneOn && (
             <Button
               my="xl"

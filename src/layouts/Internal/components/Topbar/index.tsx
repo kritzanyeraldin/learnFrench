@@ -7,11 +7,13 @@ const TopBar = () => {
   return (
     <Flex
       top={0}
+      right={0}
+      left={300}
       pos="fixed"
       direction="row"
       //
       h="64"
-      w="85%"
+      // w="100%"
       bg="White.4"
       // bg="#062756bf"
       justify="space-between"
