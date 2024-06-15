@@ -5,8 +5,8 @@ let recognition: SpeechRecognition | undefined ;// const recognition = new webki
 if ("webkitSpeechRecognition" in window) {
     recognition = new webkitSpeechRecognition();
     recognition.continuous = true
-    recognition.lang = "en-US"
-    recognition.interimResults=true
+    recognition.lang = "fr-FR"
+    // recognition.interimResults=true
     
 }
 
@@ -16,9 +16,9 @@ const useSpeechRecognition = () => {
 
     useEffect(() => {
         if (recognition) {
-            console.log("hola")
             recognition.onresult = (event: SpeechRecognitionEvent) => {
                 console.log("onresult: ", event)
+                setText(event.results[0][0].transcript)
                 recognition.stop()
                 setIsListening(false)
             }

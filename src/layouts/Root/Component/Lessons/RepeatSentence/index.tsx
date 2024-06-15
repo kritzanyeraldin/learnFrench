@@ -15,10 +15,25 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 import useSpeechRecognition from "./voice-interface";
+import { Caduceus, CodesandboxLogo } from "@phosphor-icons/react";
 
 const RepeatSentenceLesson = () => {
   const navigate = useNavigate();
-  const [microphoneOn, setMicrophoneOn] = useState(false);
+  // const [microphoneOn, setMicrophoneOn] = useState(false);
+  const sentence = "Bonjour! ça va?";
+  const cleanSymbols = (cadena: string) => {
+    cadena = cadena.toLowerCase();
+    return cadena.replace(/[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g, "");
+  };
+
+  const textSpeechProcesing = () => {
+    if (text.length === 0) return;
+    const textClean = cleanSymbols(sentence);
+    if (text === textClean) {
+      return true;
+    }
+    return false;
+  };
 
   const {
     text,
@@ -27,6 +42,8 @@ const RepeatSentenceLesson = () => {
     stopListening,
     hasRecognitionSupport,
   } = useSpeechRecognition();
+
+  const isMicrophoneOn = Boolean(text);
 
   return (
     // <div></div>
@@ -96,37 +113,66 @@ const RepeatSentenceLesson = () => {
                 <ActionIcon variant="subtle" aria-label="Settings">
                   <Icon type="speaker" size={30}></Icon>
                 </ActionIcon>
-                <Text>Bonjour! va ? </Text>
+                <Text>{sentence}</Text>
               </Group>
               <Group justify="center" mb="sm">
-                <ActionIcon
-                  variant="subtle"
-                  aria-label="Settings"
-                  // onClick={() => setMicrophoneOn(true)}
-                  onClick={startListening}
-                  disabled={microphoneOn}
+                {isListening ? (
+                  <ActionIcon
+                    variant="subtle"
+                    aria-label="Settings"
+                    onClick={stopListening}
+                    disabled={isMicrophoneOn}
+                  >
+                    <Icon
+                      type="stopMicrophone"
+                      size={30}
+                      color="#ff5555"
+                    ></Icon>
+                  </ActionIcon>
+                ) : (
+                  <ActionIcon
+                    variant="subtle"
+                    aria-label="Settings"
+                    onClick={startListening}
+                    disabled={isMicrophoneOn}
+                  >
+                    <Icon
+                      type="microphone"
+                      size={30}
+                      // color={isListening ? "#ff5555" : "#23559a"}
+                    ></Icon>
+                  </ActionIcon>
+                )}
+
+                {/* <Stack> */}
+                <Text
+                  c={
+                    isMicrophoneOn && textSpeechProcesing() ? "black" : "dimmed"
+                  }
                 >
-                  <Icon type="microphone" size={30}></Icon>
-                </ActionIcon>
-                <Text c={microphoneOn ? "black" : "dimmed"}>
-                  Bonjour! va ?{" "}
+                  {sentence}
                 </Text>
+                {/* </Stack> */}
               </Group>
+              {Boolean(text) && (
+                <Group justify="center">
+                  <Icon type="voiceToText" size={27} color="#23559a" />
+                  <Text>{text}</Text>
+                </Group>
+              )}
             </Box>
           ) : (
             <Text>No tiene soporte uwu</Text>
           )}
 
-          {microphoneOn && (
-            <Button
-              my="xl"
-              onClick={() => {
-                navigate("/questionLesson");
-              }}
-            >
-              Siguiente
-            </Button>
-          )}
+          <Button
+            my="xl"
+            onClick={() => {
+              // navigate("/questionLesson");
+            }}
+          >
+            Continuar
+          </Button>
 
           <Stack w="100%" align="center" mt={120}>
             <Text>40%</Text>
@@ -139,7 +185,7 @@ const RepeatSentenceLesson = () => {
             />
           </Stack>
         </Box>
-        {microphoneOn && (
+        {isMicrophoneOn && (
           <Box
             w="100%"
             mx="auto"
