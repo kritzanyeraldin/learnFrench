@@ -15,26 +15,28 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 import useSpeechRecognition from "./voice-interface";
-import { Caduceus, CodesandboxLogo } from "@phosphor-icons/react";
+import useSpeechHandler from "./textToVoice";
 
+const textSpeechProcesing = (text: string, sentence: string) => {
+  if (text.length === 0) return false;
+  const textClean = cleanSymbols(sentence);
+  return text === textClean;
+  // if (text === textClean) {
+  //   return true;
+  // }
+  // return false;
+};
+
+const cleanSymbols = (cadena: string) => {
+  cadena = cadena.toLowerCase();
+  return cadena.replace(/[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g, "");
+};
 const RepeatSentenceLesson = () => {
   const navigate = useNavigate();
-  // const [microphoneOn, setMicrophoneOn] = useState(false);
   const sentence = "Bonjour! ça va?";
-  const cleanSymbols = (cadena: string) => {
-    cadena = cadena.toLowerCase();
-    return cadena.replace(/[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g, "");
-  };
 
-  const textSpeechProcesing = () => {
-    if (text.length === 0) return;
-    const textClean = cleanSymbols(sentence);
-    if (text === textClean) {
-      return true;
-    }
-    return false;
-  };
-
+  const [checkAnswer, setCheckAnswer] = useState(false);
+  const { readText, isSpeaking } = useSpeechHandler();
   const {
     text,
     isListening,
@@ -42,8 +44,9 @@ const RepeatSentenceLesson = () => {
     stopListening,
     hasRecognitionSupport,
   } = useSpeechRecognition();
-
   const isMicrophoneOn = Boolean(text);
+  const validation = textSpeechProcesing(text, sentence);
+  // const [isSpeaking, setIsSpeaking] = useState(false);/*  */
 
   return (
     // <div></div>
@@ -110,9 +113,24 @@ const RepeatSentenceLesson = () => {
               p="xl"
             >
               <Group justify="center" mb="sm">
-                <ActionIcon variant="subtle" aria-label="Settings">
+                <ActionIcon
+                  variant="subtle"
+                  aria-label="Settings"
+                  onClick={() => {
+                    readText(sentence);
+                  }}
+                  // disabled={isSpeaking() ? true : false}
+                >
                   <Icon type="speaker" size={30}></Icon>
                 </ActionIcon>
+                {/* <Button
+                  onClick={() => {
+                    // isSpeaking;
+                    console.log(isSpeaking(), typeof isSpeaking);
+                  }}
+                >
+                  no
+                </Button> */}
                 <Text>{sentence}</Text>
               </Group>
               <Group justify="center" mb="sm">
@@ -134,7 +152,7 @@ const RepeatSentenceLesson = () => {
                     variant="subtle"
                     aria-label="Settings"
                     onClick={startListening}
-                    disabled={isMicrophoneOn}
+                    disabled={checkAnswer}
                   >
                     <Icon
                       type="microphone"
@@ -145,11 +163,7 @@ const RepeatSentenceLesson = () => {
                 )}
 
                 {/* <Stack> */}
-                <Text
-                  c={
-                    isMicrophoneOn && textSpeechProcesing() ? "black" : "dimmed"
-                  }
-                >
+                <Text c={isMicrophoneOn && validation ? "black" : "dimmed"}>
                   {sentence}
                 </Text>
                 {/* </Stack> */}
@@ -169,9 +183,11 @@ const RepeatSentenceLesson = () => {
             my="xl"
             onClick={() => {
               // navigate("/questionLesson");
+              checkAnswer ? navigate("/questionLesson") : setCheckAnswer(true);
             }}
+            disabled={isListening}
           >
-            Continuar
+            {checkAnswer ? "Continuar" : "Verificar"}
           </Button>
 
           <Stack w="100%" align="center" mt={120}>
@@ -185,7 +201,7 @@ const RepeatSentenceLesson = () => {
             />
           </Stack>
         </Box>
-        {isMicrophoneOn && (
+        {checkAnswer && (
           <Box
             w="100%"
             mx="auto"
@@ -202,7 +218,7 @@ const RepeatSentenceLesson = () => {
               // gap: "10",
             }}
           >
-            <Text>Correcto</Text>
+            <Text>{validation ? "Correcto" : "Incorrecto"}</Text>
             <Text>
               Ça va ?" is used to ask how it's going. The "ç" is pronounced with
               an "s" sound.
