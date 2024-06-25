@@ -387,7 +387,7 @@ const Home = () => {
                 onClick={() => {
                   setSelectedSubLevel(sublevel.id);
                   setLevelText(sublevel.id);
-                  close(false);
+                  close();
                 }}
               >
                 <Stack gap="1">
@@ -488,7 +488,7 @@ const Lesson = (props: StepperStepProps) => {
             {props.label}
             {props.description}
           </>
-          <Button bg="ToreaBay.5" onClick={() => navigate("/completeLesson")}>
+          <Button bg="ToreaBay.5" onClick={() => navigate("/lesson-exercise")}>
             Iniciar Leccion
           </Button>
           {/* <Button bg="ToreaBay.5" onClick={() => navigate("/completeLesson")}>

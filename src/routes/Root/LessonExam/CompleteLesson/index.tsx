@@ -13,7 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
-const CompleteLesson = () => {
+const FinishLesson = () => {
   const navigate = useNavigate();
   return (
     // <div></div>
@@ -94,4 +94,4 @@ const CompleteLesson = () => {
   );
 };
 
-export default CompleteLesson;
+export default FinishLesson;

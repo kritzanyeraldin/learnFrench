@@ -1,5 +1,0 @@
-export {default as CompleteSentenceLesson} from "./Lessons/CompleteSentence"
-export {default as RepeatSentenceLesson} from "./Lessons/RepeatSentence"
-export {default as QuestionLesson} from "./Lessons/QuestionLesson"
-export {default as OrderSentenceLesson} from "./Lessons/OrderSentence"
-export {default as CompleteLesson} from "./Lessons/CompleteLesson"

@@ -17,15 +17,9 @@ import {
   Statistics,
   Vocabulary,
   Settings,
-} from "./routes/Internal";
+} from "./routes/Root/Internal";
 import { InternalLayout, RootLayout } from "./layouts";
-import {
-  CompleteLesson,
-  CompleteSentenceLesson,
-  OrderSentenceLesson,
-  QuestionLesson,
-  RepeatSentenceLesson,
-} from "./layouts/Root/Component";
+import { LessonExam } from "./routes/Root";
 
 const router = createBrowserRouter([
   {
@@ -65,24 +59,8 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        path: "/completeLesson",
-        element: <CompleteSentenceLesson />,
-      },
-      {
-        path: "/repeatLesson",
-        element: <RepeatSentenceLesson />,
-      },
-      {
-        path: "/questionLesson",
-        element: <QuestionLesson />,
-      },
-      {
-        path: "/orderSentenceLesson",
-        element: <OrderSentenceLesson />,
-      },
-      {
-        path: "/finishLesson",
-        element: <CompleteLesson />,
+        path: "/lesson-exercise",
+        element: <LessonExam />,
       },
 
       {

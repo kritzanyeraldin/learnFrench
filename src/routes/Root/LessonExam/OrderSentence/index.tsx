@@ -16,12 +16,31 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
-const QuestionLesson = () => {
+const question = {
+  type: "order_sentence",
+  content: "est / la / France / capitale / de / Paris",
+  answer: "France est la capitale de Paris",
+  feedback: "feedback",
+};
+
+type OrderSentenceLessonProps = {
+  question: typeof question;
+  goToNextQuestion: () => void;
+};
+
+const OrderSentenceLesson = ({
+  question,
+  goToNextQuestion,
+}: OrderSentenceLessonProps) => {
   const navigate = useNavigate();
   const [buttonLabel, setButtonLabel] = useState<string>();
   const [inputChange, setInputChange] = useState(false);
+  const [inputAnswerValue, setInputAnswerValue] = useState("");
+  const isCorrect =
+    inputAnswerValue === question.answer ? "Correcto" : "Incorrecto";
   return (
     // <div></div>
+
     <Flex direction="column" w="100%" h="100vh" p="xl" bg="White.4">
       <Flex
         direction="column"
@@ -34,7 +53,7 @@ const QuestionLesson = () => {
         // bg="#fda1a1"
       >
         <Group justify="space-between" mb="xl" p="sm">
-          <Title order={2}>Completa la siguiente oracion</Title>
+          <Title order={2}>Ordena la siguiente oracion</Title>
           <CloseButton
             style={{ borderRadius: 30, border: "2px solid #093b81" }}
             size="lg"
@@ -85,17 +104,15 @@ const QuestionLesson = () => {
           >
             <Group justify="center" mb="sm">
               <Icon type="pencil" size={30}></Icon>
-              <Text>
-                ¿Qué puedes responder si alguien dice "¡Bonjour! Ca va?"
-              </Text>
+              <Text>{question.content}</Text>
             </Group>
             <Group justify="center" mb="sm">
               <TextInput
-                // value={value}
-                onChange={() => setInputChange(true)}
+                onChange={(event) => setInputAnswerValue(event.target.value)}
                 w="400"
                 placeholder="Escribe tu respuesta aqui"
                 disabled={buttonLabel === "Siguiente"}
+                value={inputAnswerValue}
               />
             </Group>
           </Box>
@@ -103,10 +120,11 @@ const QuestionLesson = () => {
           <Button
             my="xl"
             onClick={() => {
-              if (inputChange) {
+              if (inputAnswerValue) {
                 setButtonLabel("Siguiente");
+                console.log(inputAnswerValue);
               }
-              if (buttonLabel === "Siguiente") navigate("/orderSentenceLesson");
+              if (buttonLabel === "Siguiente") goToNextQuestion();
             }}
           >
             {buttonLabel ?? "Comprobar"}
@@ -140,11 +158,8 @@ const QuestionLesson = () => {
               // gap: "10",
             }}
           >
-            <Text>Correcto</Text>
-            <Text>
-              Ça va ?" is used to ask how it's going. The "ç" is pronounced with
-              an "s" sound.
-            </Text>
+            <Text>{isCorrect}</Text>
+            <Text>{question.feedback}</Text>
           </Box>
         )}
       </Flex>
@@ -152,4 +167,4 @@ const QuestionLesson = () => {
   );
 };
 
-export default QuestionLesson;
+export default OrderSentenceLesson;

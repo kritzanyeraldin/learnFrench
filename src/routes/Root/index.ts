@@ -1,0 +1,1 @@
+export { default as LessonExam } from './LessonExam'

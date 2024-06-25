@@ -11,19 +11,52 @@ import {
   Title,
   Tooltip,
 } from "@mantine/core";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
-const CompleteSentenceLesson = () => {
-  const correctAnswer = "opcion1";
-  const navigate = useNavigate();
-  const completeTextDefault = "________";
-  const [completeText, setCompleteText] = useState<string>();
+const question = {
+  type: "complete_with_options",
+  content: "Bonjour! {option} va?",
+  options: [
+    {
+      content: "Opción 1",
+      right: true,
+      feedback: `Ça va ?" is used to ask how it's going. The "ç" is pronounced with an "s" sound.`,
+    },
+    {
+      content: "Opción 2",
+      right: false,
+      feedback: `Ça va ?" is used to ask how it's going. The "ç" is pronounced with an "s" sound.2`,
+    },
+    {
+      content: "Opción 3",
+      right: false,
+      feedback: `Ça va ?" is used to ask how it's going. The "ç" is pronounced with an "s" sound.3`,
+    },
+  ],
+};
+
+type TQuestionOptions = typeof question.options;
+type TQuestionOption = TQuestionOptions[number];
+
+const defaultAnswer = "________";
+
+type CompleteSentenceLessonProps = {
+  question: typeof question;
+  goToNextQuestion: () => void;
+};
+
+const CompleteSentenceLesson = ({
+  question,
+  goToNextQuestion,
+}: CompleteSentenceLessonProps) => {
+  const [currentSelectedOption, setCurrentSelectedOption] =
+    useState<TQuestionOption>();
   const [verificate, setVerificate] = useState(false);
-  const optionsDisabled = verificate && Boolean(completeText);
-  const commentTextDeafault = "Incorrecto";
-  const [commentText, setCommentText] = useState<string>();
+  const optionsDisabled = verificate && Boolean(currentSelectedOption);
+  const navigate = useNavigate();
+
   return (
     // <div></div>
     <Flex direction="column" w="100%" h="100vh" p="xl" bg="White.4">
@@ -38,7 +71,7 @@ const CompleteSentenceLesson = () => {
         // bg="#fda1a1"
       >
         <Group justify="space-between" mb="xl" p="sm">
-          <Title order={2}>Completa la siguiente oracion</Title>
+          <Title order={2}>Completa la siguiente oración</Title>
           <CloseButton
             style={{ borderRadius: 30, border: "2px solid #093b81" }}
             size="lg"
@@ -91,15 +124,29 @@ const CompleteSentenceLesson = () => {
               <ActionIcon variant="subtle" aria-label="Settings">
                 <Icon type="speaker" size={30}></Icon>
               </ActionIcon>
-              <Text>Bonjour! </Text>
+              {/* <Text>Bonjour! </Text>
               <Text td="underline" tt="uppercase">
-                {completeText ?? completeTextDefault}
+                {completeText ?? completeTextDefault} */}
+              <Text>
+                {question.content.split(" ").map((s, index) => (
+                  <Fragment key={`${s}-${index}`}>
+                    {s === "{option}" ? (
+                      <Text component="span" mx="xs" td="underline">
+                        {currentSelectedOption?.content ?? defaultAnswer}
+                      </Text>
+                    ) : (
+                      <Text component="span" mx={4}>
+                        {s}
+                      </Text>
+                    )}
+                  </Fragment>
+                ))}
               </Text>
-              <Text>va ?</Text>
+              {/* <Text>va ?</Text> */}
               <ActionIcon
                 disabled={optionsDisabled}
                 onClick={() => {
-                  setCompleteText(undefined);
+                  setCurrentSelectedOption(undefined);
                 }}
                 variant="subtle"
                 aria-label="Settings"
@@ -108,34 +155,24 @@ const CompleteSentenceLesson = () => {
               </ActionIcon>
             </Group>
             <Group justify="center" mt="xl" p="xs" gap="xl">
-              <Button
-                disabled={optionsDisabled}
-                onClick={() => {
-                  setCompleteText("opcion1");
-                  setCommentText("Correcto");
-                }}
-              >
-                opcion1
-              </Button>
-              <Button
-                disabled={optionsDisabled}
-                onClick={() => setCompleteText("opcion2")}
-              >
-                opcion2
-              </Button>
-              <Button
-                disabled={optionsDisabled}
-                onClick={() => setCompleteText("opcion3")}
-              >
-                opcion3
-              </Button>
+              {question.options.map((option) => (
+                <Button
+                  key={option.content}
+                  disabled={optionsDisabled}
+                  onClick={() => {
+                    setCurrentSelectedOption(option);
+                  }}
+                >
+                  {option.content}
+                </Button>
+              ))}
             </Group>
           </Box>
           <Button
             my="xl"
             onClick={() => {
-              if (completeText) setVerificate(true);
-              if (optionsDisabled) navigate("/repeatLesson");
+              setVerificate(Boolean(currentSelectedOption?.content));
+              if (optionsDisabled) goToNextQuestion();
             }}
           >
             {optionsDisabled ? "Siguiente" : "Comprobar"}
@@ -151,7 +188,7 @@ const CompleteSentenceLesson = () => {
             />
           </Stack>
         </Box>
-        {verificate && completeText !== commentTextDeafault && (
+        {verificate && currentSelectedOption && (
           <Box
             w="100%"
             mx="auto"
@@ -168,11 +205,10 @@ const CompleteSentenceLesson = () => {
               // gap: "10",
             }}
           >
-            <Text>{commentText ?? commentTextDeafault}</Text>
             <Text>
-              Ça va ?" is used to ask how it's going. The "ç" is pronounced with
-              an "s" sound.
+              {currentSelectedOption.right ? "Correcto" : "Incorrecto"}
             </Text>
+            <Text>{currentSelectedOption.feedback}</Text>
           </Box>
         )}
       </Flex>
