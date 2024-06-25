@@ -14,9 +14,11 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Fragment, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
+import { AxiosError } from "axios";
+import { getLevels, getSublevels } from "~/network/levels";
 
 // const lesson = [
 //   {
@@ -51,314 +53,318 @@ type Chapter = {
 type SubLevel = {
   id: string;
   name: string;
-  chapters: Chapter[];
+  alias: string;
+  levelId: string;
+  createdAd: string;
+  updated: string;
+  // chapters: Chapter[];
 };
 
-const sublevels: Record<string, SubLevel> = {
-  A1: {
-    id: "A1",
-    name: "Nombre",
-    chapters: [
-      {
-        id: "1",
-        name: "Capitulo 1 ",
-        progress: "40",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Capitulo 2 ",
-        progress: "40",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-    ],
-  },
-  A2: {
-    id: "A2",
-    name: "Nombre",
-    chapters: [
-      {
-        id: "1",
-        name: "Capitulo 1",
-        progress: "10",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion2",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Capitulo 2",
-        progress: "40",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-    ],
-  },
-  A3: {
-    id: "A3",
-    name: "Nombre",
-    chapters: [
-      {
-        id: "1",
-        name: "Capitulo 1 ",
-        progress: "80",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Capitulo 2 ",
-        progress: "100",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-    ],
-  },
+// const sublevels: Record<string, SubLevel> = {
+//   A1: {
+//     id: "A1",
+//     name: "Nombre",
+//     chapters: [
+//       {
+//         id: "1",
+//         name: "Capitulo 1 ",
+//         progress: "40",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//       {
+//         id: "2",
+//         name: "Capitulo 2 ",
+//         progress: "40",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   A2: {
+//     id: "A2",
+//     name: "Nombre",
+//     chapters: [
+//       {
+//         id: "1",
+//         name: "Capitulo 1",
+//         progress: "10",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion2",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//       {
+//         id: "2",
+//         name: "Capitulo 2",
+//         progress: "40",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   A3: {
+//     id: "A3",
+//     name: "Nombre",
+//     chapters: [
+//       {
+//         id: "1",
+//         name: "Capitulo 1 ",
+//         progress: "80",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//       {
+//         id: "2",
+//         name: "Capitulo 2 ",
+//         progress: "100",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//     ],
+//   },
 
-  B1: {
-    id: "B1",
-    name: "Nombre",
-    chapters: [
-      {
-        id: "1",
-        name: "Capitulo 1",
-        progress: "25",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Capitulo 2",
-        progress: "30",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-    ],
-  },
+//   B1: {
+//     id: "B1",
+//     name: "Nombre",
+//     chapters: [
+//       {
+//         id: "1",
+//         name: "Capitulo 1",
+//         progress: "25",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//       {
+//         id: "2",
+//         name: "Capitulo 2",
+//         progress: "30",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//     ],
+//   },
 
-  B2: {
-    id: "B2",
-    name: "Nombre",
-    chapters: [
-      {
-        id: "1",
-        name: "Capitulo 1 ",
-        progress: "30",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Capitulo 2",
-        progress: "50",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-    ],
-  },
+//   B2: {
+//     id: "B2",
+//     name: "Nombre",
+//     chapters: [
+//       {
+//         id: "1",
+//         name: "Capitulo 1 ",
+//         progress: "30",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//       {
+//         id: "2",
+//         name: "Capitulo 2",
+//         progress: "50",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//     ],
+//   },
 
-  C1: {
-    id: "C1",
-    name: "Nombre",
-    chapters: [
-      {
-        id: "1",
-        name: "Capitulo 1 ",
-        progress: "10",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Capitulo 2 ",
-        progress: "20",
-        lessons: [
-          {
-            id: "1",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "2",
-            name: "Leccion1",
-            description: "Descripcion",
-          },
-          {
-            id: "3",
-            name: "Leccion3",
-            description: "Descripcion",
-          },
-        ],
-      },
-    ],
-  },
-};
+//   C1: {
+//     id: "C1",
+//     name: "Nombre",
+//     chapters: [
+//       {
+//         id: "1",
+//         name: "Capitulo 1 ",
+//         progress: "10",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//       {
+//         id: "2",
+//         name: "Capitulo 2 ",
+//         progress: "20",
+//         lessons: [
+//           {
+//             id: "1",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "2",
+//             name: "Leccion1",
+//             description: "Descripcion",
+//           },
+//           {
+//             id: "3",
+//             name: "Leccion3",
+//             description: "Descripcion",
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// };
 
 const Home = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -367,6 +373,30 @@ const Home = () => {
   const [selectedSubLevel, setSelectedSubLevel] = useState("A1");
   const levelTextDefault = "A1";
   const [levelText, setLevelText] = useState<string>();
+  const [sublevels, setSublevels] = useState<Record<string, SubLevel>>();
+
+  type TExampleResponseError = {
+    error: string;
+  };
+
+  const getAllSublevels = useCallback(async () => {
+    try {
+      const sublevels = await getSublevels();
+      setSublevels(sublevels);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response && "error" in error.response.data) {
+          const data = error.response.data.error as TExampleResponseError;
+          return data.error;
+        }
+      }
+    }
+  }, [setSublevels]);
+
+  useEffect(() => {
+    getAllSublevels();
+  }, [getAllSublevels]);
+
   return (
     <Flex direction="column" w="100%" mx="auto" maw={620} gap="sm" py={80}>
       <Modal
@@ -378,37 +408,38 @@ const Home = () => {
         size="lg"
       >
         <Group bg="White.2">
-          {Object.values(sublevels).map((sublevel) => (
-            <Stack justify="center" key={sublevel.id}>
-              <Button
-                variant="transparent"
-                size="lg"
-                style={{ height: 200 }}
-                onClick={() => {
-                  setSelectedSubLevel(sublevel.id);
-                  setLevelText(sublevel.id);
-                  close();
-                }}
-              >
-                <Stack gap="1">
-                  <RingProgress
-                    sections={[{ value: 40, color: "ToreaBay.8" }]}
-                    label={
-                      <Title order={2} ta="center" c="ToreaBay.14">
-                        {sublevel.id}
-                      </Title>
-                    }
-                  />
-                  <Title order={6} ta="center" c="ToreaBay.14">
-                    {sublevel.name}
-                  </Title>
-                  <Text size="sm" ta="center" c="ToreaBay.14">
-                    {sublevel.chapters.length} capitulos
-                  </Text>
-                </Stack>
-              </Button>
-            </Stack>
-          ))}
+          {sublevels &&
+            Object.values(sublevels).map((sublevel) => (
+              <Stack justify="center" key={sublevel.id}>
+                <Button
+                  variant="transparent"
+                  size="lg"
+                  style={{ height: 200 }}
+                  onClick={() => {
+                    setSelectedSubLevel(sublevel.alias);
+                    setLevelText(sublevel.alias);
+                    close();
+                  }}
+                >
+                  <Stack gap="1">
+                    <RingProgress
+                      sections={[{ value: 40, color: "ToreaBay.8" }]}
+                      label={
+                        <Title order={2} ta="center" c="ToreaBay.14">
+                          {sublevel.alias}
+                        </Title>
+                      }
+                    />
+                    <Title order={6} ta="center" c="ToreaBay.14">
+                      {sublevel.name}
+                    </Title>
+                    <Text size="sm" ta="center" c="ToreaBay.14">
+                      {sublevel.chapters.length} capitulos
+                    </Text>
+                  </Stack>
+                </Button>
+              </Stack>
+            ))}
         </Group>
       </Modal>
 
