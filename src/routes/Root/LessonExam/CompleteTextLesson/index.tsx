@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
 const question = {
-  type: "order_sentence",
+  type: "complete_with_text",
   content: "¿Qué puedes responder si alguien dice ¡Bonjour! Ca va?",
   answer: "si",
   feedback: "feedback",
@@ -28,13 +28,12 @@ type QuestionLessonProps = {
   goToNextQuestion: () => void;
 };
 
-const QuestionLesson = ({
+const CompleteTextQuestion = ({
   question,
   goToNextQuestion,
 }: QuestionLessonProps) => {
   const navigate = useNavigate();
   const [buttonLabel, setButtonLabel] = useState<string>();
-  const [inputChange, setInputChange] = useState(false);
   const [inputAnswerValue, setInputAnswerValue] = useState("");
   const isCorrect =
     question.answer === inputAnswerValue ? "Correct" : "Incorrecto";
@@ -165,4 +164,4 @@ const QuestionLesson = ({
   );
 };
 
-export default QuestionLesson;
+export default CompleteTextQuestion;

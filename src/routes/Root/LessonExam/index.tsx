@@ -2,10 +2,9 @@ import { useState } from "react";
 import CompleteSentenceLesson from "./CompleteSentence";
 import { Button } from "@mantine/core";
 import OrderSentenceLesson from "./OrderSentence";
-import QuestionLesson from "./QuestionLesson";
 import RepeatSentenceLesson from "./RepeatSentence";
-import { useNavigate } from "react-router-dom";
 import FinishLesson from "./CompleteLesson";
+import CompleteTextQuestion from "./CompleteTextLesson";
 
 type TCompleteWithOptionsQuestion = {
   type: "complete_with_options";
@@ -24,8 +23,8 @@ type TOrderSentenceQuestion = {
   feedback: string;
 };
 
-type TCompleteQuestion = {
-  type: "complete_question";
+type TCompleteWithTextQuestion = {
+  type: "complete_with_text";
   content: string;
   answer: string;
   feedback: string;
@@ -40,7 +39,7 @@ type TRepeatSentenceQuestion = {
 type TLessonQuestion =
   | TCompleteWithOptionsQuestion
   | TOrderSentenceQuestion
-  | TCompleteQuestion
+  | TCompleteWithTextQuestion
   | TRepeatSentenceQuestion;
 
 const questions: TLessonQuestion[] = [
@@ -74,7 +73,7 @@ const questions: TLessonQuestion[] = [
   },
 
   {
-    type: "complete_question",
+    type: "complete_with_text",
     content: "¿Qué puedes responder si alguien dice ¡Bonjour! Ca va?",
     answer: "si",
     feedback: "feedback",
@@ -100,6 +99,8 @@ const LessonExam = () => {
     console.log(currentQuestionIndex, questions.length);
 
     const currentQuestion = questions[currentQuestionIndex];
+    if (currentQuestionIndex === questions.length) return;
+
     if (currentQuestion.type === "complete_with_options")
       return (
         <CompleteSentenceLesson
@@ -118,9 +119,9 @@ const LessonExam = () => {
         />
       );
 
-    if (currentQuestion.type === "complete_question")
+    if (currentQuestion.type === "complete_with_text")
       return (
-        <QuestionLesson
+        <CompleteTextQuestion
           key={currentQuestion.content}
           question={currentQuestion}
           goToNextQuestion={goToNextQuestion}
