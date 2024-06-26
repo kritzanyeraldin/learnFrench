@@ -59,41 +59,32 @@ const CompleteSentenceLesson = ({
 
   return (
     // <div></div>
-    <Flex direction="column" w="100%" h="100vh" p="xl" bg="White.4">
-      <Flex
-        direction="column"
+    <Flex direction="column" gap="sm">
+      <Group justify="space-between" mb="xl">
+        <Title order={2}>Completa la siguiente oración</Title>
+        <CloseButton
+          style={{ borderRadius: 30, border: "2px solid #093b81" }}
+          size="lg"
+          onClick={() => navigate("/home")}
+        />
+      </Group>
+      <Box
         w="100%"
         mx="auto"
-        maw={1720}
-        h="100vh"
-        py={30}
-        gap="sm"
+        maw={1000}
+        p="xs"
+        style={{
+          // border: "2px solid #DAE1EA",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          //   gap: "10",
+        }}
         // bg="#fda1a1"
       >
-        <Group justify="space-between" mb="xl" p="sm">
-          <Title order={2}>Completa la siguiente oración</Title>
-          <CloseButton
-            style={{ borderRadius: 30, border: "2px solid #093b81" }}
-            size="lg"
-            onClick={() => navigate("/home")}
-          />
-        </Group>
-        <Box
-          w="100%"
-          mx="auto"
-          maw={1000}
-          p="xs"
-          h={550}
-          style={{
-            // border: "2px solid #DAE1EA",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            //   gap: "10",
-          }}
-        >
-          <Group m="sm" w="100%" align="center" justify="flex-end">
+        <Box>
+          <Group justify="flex-end" mb="sm">
             <Tooltip label="Gramatica">
               <ActionIcon
                 variant="subtle"
@@ -113,14 +104,8 @@ const CompleteSentenceLesson = ({
               </ActionIcon>
             </Tooltip>
           </Group>
-          <Box
-            w="100%"
-            mx="auto"
-            maw={700}
-            style={{ border: "2px solid #DAE1EA", borderRadius: 6 }}
-            p="xl"
-          >
-            <Group justify="center" mb="sm">
+          <Box style={{ border: "2px solid #DAE1EA", borderRadius: 6 }} p="xl">
+            <Group justify="center">
               <ActionIcon variant="subtle" aria-label="Settings">
                 <Icon type="speaker" size={30}></Icon>
               </ActionIcon>
@@ -168,50 +153,35 @@ const CompleteSentenceLesson = ({
               ))}
             </Group>
           </Box>
-          <Button
-            my="xl"
-            onClick={() => {
-              setVerificate(Boolean(currentSelectedOption?.content));
-              if (optionsDisabled) goToNextQuestion();
-            }}
-          >
-            {optionsDisabled ? "Siguiente" : "Comprobar"}
-          </Button>
-          <Stack w="100%" align="center" mt={120}>
-            <Text>40%</Text>
-            <Progress
-              w="100%"
-              radius="xl"
-              size="lg"
-              value={20}
-              color="ToreaBay.8"
-            />
-          </Stack>
         </Box>
-        {verificate && currentSelectedOption && (
-          <Box
-            w="100%"
-            mx="auto"
-            p="lg"
-            h="150"
-            mt="xl"
-            style={{
-              border: "2px solid #DAE1EA",
-              borderRadius: 6,
-              display: "flex",
-              flexDirection: "column",
-              // alignItems: "center",
-              justifyContent: "space-around",
-              // gap: "10",
-            }}
-          >
-            <Text>
-              {currentSelectedOption.right ? "Correcto" : "Incorrecto"}
-            </Text>
-            <Text>{currentSelectedOption.feedback}</Text>
-          </Box>
-        )}
-      </Flex>
+        <Button
+          mt="lg"
+          onClick={() => {
+            setVerificate(Boolean(currentSelectedOption?.content));
+            if (optionsDisabled) goToNextQuestion();
+          }}
+        >
+          {optionsDisabled ? "Siguiente" : "Comprobar"}
+        </Button>
+      </Box>
+      {verificate && currentSelectedOption && (
+        <Box
+          mt="lg"
+          p="xl"
+          style={{
+            border: "2px solid #DAE1EA",
+            borderRadius: 6,
+            display: "flex",
+            flexDirection: "column",
+            // alignItems: "center",
+            justifyContent: "space-around",
+            // gap: "10",
+          }}
+        >
+          <Text>{currentSelectedOption.right ? "Correcto" : "Incorrecto"}</Text>
+          <Text>{currentSelectedOption.feedback}</Text>
+        </Box>
+      )}
     </Flex>
   );
 };

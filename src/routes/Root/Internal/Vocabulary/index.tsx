@@ -1,4 +1,7 @@
-import { Accordion, Flex, Text } from "@mantine/core";
+import { Accordion, Button, Flex, Text } from "@mantine/core";
+import { AxiosError } from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { getAllVocabularies } from "~/network/vocabularies/getAllVocabularies";
 
 const vocabularies = [
   {
@@ -27,6 +30,43 @@ const vocabularies = [
 ];
 
 const Vocabulary = () => {
+  const [allVocabularies, setAllVocabularies] = useState<Vocabulary[]>();
+  type TExampleResponseError = {
+    error: string;
+  };
+  const getVocabularies = useCallback(async () => {
+    try {
+      const grammars = await getAllVocabularies();
+      console.log(grammars);
+      setAllVocabularies(grammars);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response && "error" in error.response.data) {
+          const data = error.response.data.error as TExampleResponseError;
+          return data.error;
+        }
+      }
+    }
+  }, [setAllVocabularies]);
+
+  const cleanData = (data: string): Record<string, string> => {
+    // Remover caracteres innecesarios (comillas dobles al principio y al final)
+    const cleanedData = data.replace(/^"|"$/g, "");
+
+    // Parsear el JSON limpio a un objeto
+    const parsedData = JSON.parse(cleanedData);
+    console.log(parsedData);
+    Object.entries(parsedData).forEach(([key, value]) => {
+      console.log(`${key}: ${value}`);
+      // Aquí puedes realizar cualquier operación con key y value
+    });
+
+    return parsedData;
+  };
+
+  useEffect(() => {
+    getVocabularies();
+  }, [getVocabularies]);
   return (
     <Flex py={80} w="100%" mx="auto" maw={1200}>
       <Accordion
@@ -35,16 +75,20 @@ const Vocabulary = () => {
         transitionDuration={500}
         radius="md"
       >
-        {vocabularies.map((vocabulary) => (
-          <Accordion.Item value={vocabulary.id} key={vocabulary.label}>
-            <Accordion.Control>
-              <Text> {vocabulary.label}</Text>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Text size="sm">{vocabulary.content}</Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-        ))}
+        {allVocabularies &&
+          allVocabularies.map((vocabulary) => (
+            <Accordion.Item
+              value={vocabulary.id.toString()}
+              key={vocabulary.id}
+            >
+              <Accordion.Control>
+                <Text> {vocabulary.name}</Text>
+              </Accordion.Control>
+              <Accordion.Panel>
+                <Text size="sm">{vocabulary.content}</Text>
+              </Accordion.Panel>
+            </Accordion.Item>
+          ))}
       </Accordion>
     </Flex>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CompleteSentenceLesson from "./CompleteSentence";
-import { Button } from "@mantine/core";
+import { Box, Center, Progress, Stack, Text } from "@mantine/core";
 import OrderSentenceLesson from "./OrderSentence";
 import RepeatSentenceLesson from "./RepeatSentence";
 import FinishLesson from "./CompleteLesson";
@@ -87,7 +87,9 @@ const questions: TLessonQuestion[] = [
 
 const LessonExam = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  // const navigate = useNavigate();
+  const progressPercentage = parseFloat(
+    ((currentQuestionIndex / questions.length) * 100).toFixed(2)
+  );
 
   const goToNextQuestion = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -96,8 +98,6 @@ const LessonExam = () => {
     setCurrentQuestionIndex(currentQuestionIndex - 1);
 
   const renderLesson = () => {
-    console.log(currentQuestionIndex, questions.length);
-
     const currentQuestion = questions[currentQuestionIndex];
     if (currentQuestionIndex === questions.length) return;
 
@@ -139,12 +139,22 @@ const LessonExam = () => {
   };
 
   return (
-    <div>
-      {renderLesson()}
-      {currentQuestionIndex === questions.length && <FinishLesson />}
-      <Button onClick={goToPreviousQuestion}>Ant pregunta</Button>
-      <Button onClick={goToNextQuestion}>Sgt pregunta</Button>
-    </div>
+    <Center bg="White.4" h="100dvh">
+      <Box w="100%" p="xl" maw={900}>
+        {renderLesson()}
+        {currentQuestionIndex === questions.length && <FinishLesson />}
+        <Stack w="100%" align="center" mt="xl" mb={120}>
+          <Progress
+            w="100%"
+            radius="xl"
+            size="lg"
+            value={progressPercentage}
+            color="ToreaBay.8"
+          />
+          <Text>{progressPercentage}%</Text>
+        </Stack>
+      </Box>
+    </Center>
   );
 };
 

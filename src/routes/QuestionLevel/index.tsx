@@ -139,7 +139,7 @@ const QuestionLevel = () => {
           >
             {optionsDisabled ? "Finalizar" : "Comprobar"}
           </Button>
-          <Stack w="100%" align="center" mt={120}>
+          {/* <Stack w="100%" align="center" mt={120}>
             <Text>40%</Text>
             <Progress
               w="100%"
@@ -148,7 +148,7 @@ const QuestionLevel = () => {
               value={20}
               color="ToreaBay.8"
             />
-          </Stack>
+          </Stack> */}
         </Box>
         {verificate && completeText !== commentTextDeafault && (
           <Box

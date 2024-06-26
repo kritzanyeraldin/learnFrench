@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Flex,
   Group,
   Modal,
@@ -14,375 +15,64 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 import { AxiosError } from "axios";
-import { getLevels, getSublevels } from "~/network/levels";
-
-// const lesson = [
-//   {
-//     id: "1",
-//     name: "Leccion1",
-//     description: "Descripcion",
-//   },
-//   {
-//     id: "2",
-//     name: "Leccion1",
-//     description: "Descripcion",
-//   },
-//   {
-//     id: "3",
-//     name: "Leccion3",
-//     description: "Descripcion",
-//   },
-// ];
-type Lesson = {
-  id: string;
-  name: string;
-  description: string;
-};
-
-type Chapter = {
-  id: string;
-  name: string;
-  progress: string;
-  lessons: Lesson[];
-};
-
-type SubLevel = {
-  id: string;
-  name: string;
-  alias: string;
-  levelId: string;
-  createdAd: string;
-  updated: string;
-  // chapters: Chapter[];
-};
-
-// const sublevels: Record<string, SubLevel> = {
-//   A1: {
-//     id: "A1",
-//     name: "Nombre",
-//     chapters: [
-//       {
-//         id: "1",
-//         name: "Capitulo 1 ",
-//         progress: "40",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//       {
-//         id: "2",
-//         name: "Capitulo 2 ",
-//         progress: "40",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//     ],
-//   },
-//   A2: {
-//     id: "A2",
-//     name: "Nombre",
-//     chapters: [
-//       {
-//         id: "1",
-//         name: "Capitulo 1",
-//         progress: "10",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion2",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//       {
-//         id: "2",
-//         name: "Capitulo 2",
-//         progress: "40",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//     ],
-//   },
-//   A3: {
-//     id: "A3",
-//     name: "Nombre",
-//     chapters: [
-//       {
-//         id: "1",
-//         name: "Capitulo 1 ",
-//         progress: "80",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//       {
-//         id: "2",
-//         name: "Capitulo 2 ",
-//         progress: "100",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//     ],
-//   },
-
-//   B1: {
-//     id: "B1",
-//     name: "Nombre",
-//     chapters: [
-//       {
-//         id: "1",
-//         name: "Capitulo 1",
-//         progress: "25",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//       {
-//         id: "2",
-//         name: "Capitulo 2",
-//         progress: "30",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//     ],
-//   },
-
-//   B2: {
-//     id: "B2",
-//     name: "Nombre",
-//     chapters: [
-//       {
-//         id: "1",
-//         name: "Capitulo 1 ",
-//         progress: "30",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//       {
-//         id: "2",
-//         name: "Capitulo 2",
-//         progress: "50",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//     ],
-//   },
-
-//   C1: {
-//     id: "C1",
-//     name: "Nombre",
-//     chapters: [
-//       {
-//         id: "1",
-//         name: "Capitulo 1 ",
-//         progress: "10",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//       {
-//         id: "2",
-//         name: "Capitulo 2 ",
-//         progress: "20",
-//         lessons: [
-//           {
-//             id: "1",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "2",
-//             name: "Leccion1",
-//             description: "Descripcion",
-//           },
-//           {
-//             id: "3",
-//             name: "Leccion3",
-//             description: "Descripcion",
-//           },
-//         ],
-//       },
-//     ],
-//   },
-// };
+import { getSublevels } from "~/network/levels";
+import { getChaptersBySublevelId } from "~/network/chapters/getChaptersBySublevelId";
+import { getExerciseByLesson } from "~/network/lessons/getExercisesLesson";
+import {
+  LayoutContext,
+  LayoutProvider,
+  TLayoutContext,
+} from "~/layouts/Internal/contexts";
+import { CodesandboxLogo } from "@phosphor-icons/react";
+import { getGenerateUserContent } from "~/network/userContent/getGenerateUserContent";
+import { getAllChaptersByUser } from "~/network/userContent/getAllChapters";
+import { getAllSublevelsByUser } from "~/network/userContent/getAllSubLevels";
 
 const Home = () => {
   const [opened, { open, close }] = useDisclosure(false);
-
   const [active, setActive] = useState(1);
-  const [selectedSubLevel, setSelectedSubLevel] = useState("A1");
-  const levelTextDefault = "A1";
-  const [levelText, setLevelText] = useState<string>();
+  const [selectedSublevel, setSelectedSublevel] = useState<SubLevel>();
   const [sublevels, setSublevels] = useState<Record<string, SubLevel>>();
+  const [sublevelsLoading, setSublevelsLoading] = useState(true);
+  const [sublevelChapters, setSublevelChapters] = useState<Chapter[]>();
+  const {
+    isPreferencesSelected,
+    setPreferencesSelected,
+    preferenceUser,
+    setPreferenceUser,
+  } = useContext(LayoutContext) as TLayoutContext;
 
   type TExampleResponseError = {
     error: string;
   };
 
-  const getAllSublevels = useCallback(async () => {
+  const getAllChapterUser = useCallback(
+    async (userId: number, userPreference: string, sublevelId: number) => {
+      try {
+        if (!userPreference) return "nou";
+        const chapters = await getAllChaptersByUser(userPreference);
+        setSublevelChapters(chapters);
+        setPreferenceUser("");
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response && "error" in error.response.data) {
+            const data = error.response.data.error as TExampleResponseError;
+            return data.error;
+          }
+        }
+      }
+    },
+    [setSublevelChapters, setPreferenceUser]
+  );
+
+  const getSublevelChapters = useCallback(async (sublevelId: number) => {
     try {
-      const sublevels = await getSublevels();
-      setSublevels(sublevels);
+      const chapters = await getChaptersBySublevelId(sublevelId);
+      setSublevelChapters(chapters);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response && "error" in error.response.data) {
@@ -391,11 +81,62 @@ const Home = () => {
         }
       }
     }
-  }, [setSublevels]);
+  }, []);
+
+  const getAllSublevelsUser = useCallback(
+    async (userId: number, userPreference: string) => {
+      try {
+        const sublevels = await getAllSublevelsByUser(userPreference, userId);
+        const sublevelsAsArray = Object.values(sublevels);
+        const selectedSublevel = sublevelsAsArray[0];
+        await getSublevelChapters(selectedSublevel.id);
+
+        setSublevels(sublevels);
+        setSelectedSublevel(selectedSublevel);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response && "error" in error.response.data) {
+            const data = error.response.data.error as TExampleResponseError;
+            return data.error;
+          }
+        }
+      } finally {
+        setSublevelsLoading(false);
+      }
+    },
+    [setSublevels, setSublevelsLoading, getAllChapterUser]
+  );
+
+  const getAllSublevels = useCallback(async () => {
+    try {
+      const sublevels = await getSublevels();
+      const sublevelsAsArray = Object.values(sublevels);
+      const selectedSublevel = sublevelsAsArray[0];
+      await getSublevelChapters(selectedSublevel.id);
+
+      setSublevels(sublevels);
+      setSelectedSublevel(selectedSublevel);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response && "error" in error.response.data) {
+          const data = error.response.data.error as TExampleResponseError;
+          return data.error;
+        }
+      }
+    } finally {
+      setSublevelsLoading(false);
+    }
+  }, [setSublevels, setSublevelsLoading, getSublevelChapters]);
 
   useEffect(() => {
+    if (preferenceUser.length !== 0) getAllSublevelsUser(1, preferenceUser);
     getAllSublevels();
-  }, [getAllSublevels]);
+  }, [getAllSublevels, preferenceUser, getAllSublevelsUser]);
+
+  if (sublevelsLoading) return <Center h="100dvh">cargando...</Center>;
+
+  if (!sublevels || !selectedSublevel || !sublevelChapters)
+    return <Center h="100dvh">error...</Center>;
 
   return (
     <Flex direction="column" w="100%" mx="auto" maw={620} gap="sm" py={80}>
@@ -416,14 +157,19 @@ const Home = () => {
                   size="lg"
                   style={{ height: 200 }}
                   onClick={() => {
-                    setSelectedSubLevel(sublevel.alias);
-                    setLevelText(sublevel.alias);
+                    setSelectedSublevel(sublevel);
+                    getSublevelChapters(sublevel.id);
                     close();
                   }}
                 >
                   <Stack gap="1">
                     <RingProgress
-                      sections={[{ value: 40, color: "ToreaBay.8" }]}
+                      sections={[
+                        {
+                          value: sublevel.progressPercentage,
+                          color: "ToreaBay.8",
+                        },
+                      ]}
                       label={
                         <Title order={2} ta="center" c="ToreaBay.14">
                           {sublevel.alias}
@@ -434,7 +180,8 @@ const Home = () => {
                       {sublevel.name}
                     </Title>
                     <Text size="sm" ta="center" c="ToreaBay.14">
-                      {sublevel.chapters.length} capitulos
+                      {sublevel.chapters}
+                      {sublevel.chapters > 1 ? "capítulos" : "capítulo"}
                     </Text>
                   </Stack>
                 </Button>
@@ -451,44 +198,87 @@ const Home = () => {
         justify="flex-start"
       >
         <Text size="lg" color="ToreaBay.15">
-          {levelText ?? levelTextDefault}
+          {selectedSublevel.alias}
         </Text>
       </Button>
 
-      {sublevels[selectedSubLevel].chapters.map((chapter) => (
-        <Box
-          key={chapter.id}
-          style={{ border: "2px solid #DAE1EA", borderRadius: 6 }}
-          p="xl"
-        >
-          <Title order={2}>{chapter.name}</Title>
-          <Text ta="center">{chapter.progress}</Text>
-          <Progress value={40} />
-          <Stepper
-            active={active}
-            orientation="vertical"
-            iconSize={90}
-            // bg="green"
-            mt="md"
+      {sublevelChapters.map((chapter) => {
+        const progressPercentage = parseFloat(
+          (
+            (chapter.completedLessonsIds.length / chapter.lessons.length) *
+            100
+          ).toFixed(2)
+        );
+        const currentLessonIndex = chapter.lessons.findIndex(
+          (lesson) => !chapter.completedLessonsIds.includes(lesson.id)
+        );
+
+        return (
+          <Box
+            key={chapter.id}
+            style={{ border: "2px solid #DAE1EA", borderRadius: 6 }}
+            p="xl"
           >
-            {chapter.lessons.map((lesson) => (
-              <Lesson
-                key={lesson.id}
-                label={<Text>{lesson.name}</Text>}
-                description={<Text>{lesson.description}</Text>}
-              />
-            ))}
-          </Stepper>
-        </Box>
-      ))}
+            <Title order={2}>{chapter.name}</Title>
+            <Text ta="center">{progressPercentage}%</Text>
+            <Progress value={progressPercentage} />
+            <Stepper
+              active={currentLessonIndex}
+              orientation="vertical"
+              iconSize={90}
+              // bg="green"
+              mt="md"
+            >
+              {chapter.lessons.map((lesson) => (
+                <Lesson
+                  key={lesson.id}
+                  label={<Text>{lesson.name}</Text>}
+                  description={<Text>{lesson.description}</Text>}
+                  name={lesson.name}
+                />
+              ))}
+            </Stepper>
+          </Box>
+        );
+      })}
 
       {/* <Button onClick={() => navigate("/lesson")}> Hola</Button> */}
     </Flex>
   );
 };
 
-const Lesson = (props: StepperStepProps) => {
+type LessonProps = StepperStepProps & {
+  name: string;
+};
+
+const Lesson = ({ name, ...props }: LessonProps) => {
   const navigate = useNavigate();
+  const { exercisesContent, setExercisesContent } = useContext(
+    LayoutContext
+  ) as TLayoutContext;
+  type TExampleResponseError = {
+    error: string;
+  };
+  const getLessonExercises = useCallback(
+    async (lesson: string) => {
+      try {
+        console.log(lesson);
+        const exercises = await getExerciseByLesson(lesson);
+        if (!exercises) return `No se generaron los ejercicios`;
+        setExercisesContent(exercises);
+        console.log(exercises);
+        const options = Object.values(exercises.complete_with_options);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response && "error" in error.response.data) {
+            const data = error.response.data.error as TExampleResponseError;
+            return data.error;
+          }
+        }
+      }
+    },
+    [setExercisesContent, exercisesContent]
+  );
   return (
     <Popover
       withArrow
@@ -519,7 +309,14 @@ const Lesson = (props: StepperStepProps) => {
             {props.label}
             {props.description}
           </>
-          <Button bg="ToreaBay.5" onClick={() => navigate("/lesson-exercise")}>
+          <Button
+            bg="ToreaBay.5"
+            onClick={() => {
+              console.log("name", name),
+                getLessonExercises(name),
+                navigate("/lesson-exercise");
+            }}
+          >
             Iniciar Leccion
           </Button>
           {/* <Button bg="ToreaBay.5" onClick={() => navigate("/completeLesson")}>
