@@ -168,6 +168,7 @@ const LessonExam = () => {
           key={currentQuestion.content}
           question={currentQuestion}
           goToNextQuestion={goToNextQuestion}
+          setTotalScore={setTotalScore}
         />
       )
 
@@ -177,6 +178,7 @@ const LessonExam = () => {
           key={currentQuestion.content}
           question={currentQuestion}
           goToNextQuestion={goToNextQuestion}
+          setTotalScore={setTotalScore}
         />
       )
   }
