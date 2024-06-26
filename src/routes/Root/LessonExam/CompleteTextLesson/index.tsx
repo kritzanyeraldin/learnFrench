@@ -11,32 +11,37 @@ import {
   TextInput,
   Title,
   Tooltip,
-} from "@mantine/core";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Icon } from "~/components";
+} from "@mantine/core"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Icon } from "~/components"
 
 const question = {
   type: "complete_with_text",
   content: "¿Qué puedes responder si alguien dice ¡Bonjour! Ca va?",
   answer: "si",
-  feedback: "feedback",
-};
+  feedback: {
+    correcto: "feedback",
+    incorrecto: "feedback"
+  },
+}
 
 type QuestionLessonProps = {
-  question: typeof question;
-  goToNextQuestion: () => void;
-};
+  question: typeof question
+  goToNextQuestion: () => void
+  setTotalScore: React.Dispatch<React.SetStateAction<number>>
+}
 
 const CompleteTextQuestion = ({
   question,
   goToNextQuestion,
+  setTotalScore
 }: QuestionLessonProps) => {
-  const navigate = useNavigate();
-  const [buttonLabel, setButtonLabel] = useState<string>();
-  const [inputAnswerValue, setInputAnswerValue] = useState("");
+  const navigate = useNavigate()
+  const [buttonLabel, setButtonLabel] = useState<string>()
+  const [inputAnswerValue, setInputAnswerValue] = useState("")
   const isCorrect =
-    question.answer === inputAnswerValue ? "Correct" : "Incorrecto";
+    question.answer === inputAnswerValue ? "Correct" : "Incorrecto"
   return (
     // <div></div>
 
@@ -109,10 +114,11 @@ const CompleteTextQuestion = ({
         <Button
           mt="lg"
           onClick={() => {
+            if (inputAnswerValue === question.answer) setTotalScore(prevScore => prevScore + 10)
             if (inputAnswerValue) {
-              setButtonLabel("Siguiente");
+              setButtonLabel("Siguiente")
             }
-            if (buttonLabel === "Siguiente") goToNextQuestion();
+            if (buttonLabel === "Siguiente") goToNextQuestion()
           }}
         >
           {buttonLabel ?? "Comprobar"}
@@ -133,11 +139,11 @@ const CompleteTextQuestion = ({
           }}
         >
           <Text>{isCorrect}</Text>
-          <Text>{question.feedback}</Text>
+          <Text>{inputAnswerValue === question.answer ? question.feedback.correcto : question.feedback.incorrecto}</Text>
         </Box>
       )}
     </Flex>
-  );
-};
+  )
+}
 
-export default CompleteTextQuestion;
+export default CompleteTextQuestion

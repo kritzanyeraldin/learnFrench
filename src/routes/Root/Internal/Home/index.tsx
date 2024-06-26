@@ -13,130 +13,135 @@ import {
   StepperStepProps,
   Text,
   Title,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Icon } from "~/components";
-import { AxiosError } from "axios";
-import { getSublevels } from "~/network/levels";
-import { getChaptersBySublevelId } from "~/network/chapters/getChaptersBySublevelId";
-import { getExerciseByLesson } from "~/network/lessons/getExercisesLesson";
+} from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
+import { useCallback, useContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Icon } from "~/components"
+import { AxiosError } from "axios"
+import { getSublevels } from "~/network/levels"
+import { getChaptersBySublevelId } from "~/network/chapters/getChaptersBySublevelId"
+import { getExerciseByLesson } from "~/network/lessons/getExercisesLesson"
 import {
   LayoutContext,
   LayoutProvider,
   TLayoutContext,
-} from "~/layouts/Internal/contexts";
-import { CodesandboxLogo } from "@phosphor-icons/react";
-import { getGenerateUserContent } from "~/network/userContent/getGenerateUserContent";
-import { getAllChaptersByUser } from "~/network/userContent/getAllChapters";
-import { getAllSublevelsByUser } from "~/network/userContent/getAllSubLevels";
+} from "~/layouts/Internal/contexts"
+import { CodesandboxLogo } from "@phosphor-icons/react"
+import { getGenerateUserContent } from "~/network/userContent/getGenerateUserContent"
+import { getAllChaptersByUser } from "~/network/userContent/getAllChapters"
+import { getAllSublevelsByUser } from "~/network/userContent/getAllSubLevels"
 
 const Home = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [active, setActive] = useState(1);
-  const [selectedSublevel, setSelectedSublevel] = useState<SubLevel>();
-  const [sublevels, setSublevels] = useState<Record<string, SubLevel>>();
-  const [sublevelsLoading, setSublevelsLoading] = useState(true);
-  const [sublevelChapters, setSublevelChapters] = useState<Chapter[]>();
+  const [opened, { open, close }] = useDisclosure(false)
+  const [active, setActive] = useState(1)
+  const [selectedSublevel, setSelectedSublevel] = useState<SubLevel>()
+  const [sublevels, setSublevels] = useState<Record<string, SubLevel>>()
+  const [sublevelsLoading, setSublevelsLoading] = useState(true)
+  const [sublevelChapters, setSublevelChapters] = useState<Chapter[]>()
   const {
     isPreferencesSelected,
     setPreferencesSelected,
     preferenceUser,
     setPreferenceUser,
-  } = useContext(LayoutContext) as TLayoutContext;
+  } = useContext(LayoutContext) as TLayoutContext
 
   type TExampleResponseError = {
-    error: string;
-  };
+    error: string
+  }
 
-  const getAllChapterUser = useCallback(
-    async (userId: number, userPreference: string, sublevelId: number) => {
+  const getSublevelChapters = useCallback(
+    async (sublevelId: number, userId?: number, userPreference?: string) => {
       try {
-        if (!userPreference) return "nou";
-        const chapters = await getAllChaptersByUser(userPreference);
-        setSublevelChapters(chapters);
-        setPreferenceUser("");
+        const chapters = await getAllChaptersByUser({
+          sublevelId,
+          userId,
+          userPreference
+        })
+        setSublevelChapters(chapters)
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response && "error" in error.response.data) {
-            const data = error.response.data.error as TExampleResponseError;
-            return data.error;
+            const data = error.response.data.error as TExampleResponseError
+            return data.error
           }
         }
       }
     },
-    [setSublevelChapters, setPreferenceUser]
-  );
+    [setSublevelChapters]
+  )
 
-  const getSublevelChapters = useCallback(async (sublevelId: number) => {
-    try {
-      const chapters = await getChaptersBySublevelId(sublevelId);
-      setSublevelChapters(chapters);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response && "error" in error.response.data) {
-          const data = error.response.data.error as TExampleResponseError;
-          return data.error;
-        }
-      }
-    }
-  }, []);
+  // const getSublevelChapters = useCallback(async (sublevelId: number) => {
+  //   try {
+  //     const chapters = await getChaptersBySublevelId(sublevelId)
+  //     setSublevelChapters(chapters)
+  //   } catch (error) {
+  //     if (error instanceof AxiosError) {
+  //       if (error.response && "error" in error.response.data) {
+  //         const data = error.response.data.error as TExampleResponseError
+  //         return data.error
+  //       }
+  //     }
+  //   }
+  // }, [])
 
-  const getAllSublevelsUser = useCallback(
-    async (userId: number, userPreference: string) => {
-      try {
-        const sublevels = await getAllSublevelsByUser(userPreference, userId);
-        const sublevelsAsArray = Object.values(sublevels);
-        const selectedSublevel = sublevelsAsArray[0];
-        await getSublevelChapters(selectedSublevel.id);
+  // const getAllSublevelsUser = useCallback(
+  //   async (userId: number, userPreference: string) => {
+  //     try {
+  //       const sublevels = await getAllSublevelsByUser(userPreference, userId)
+  //       const sublevelsAsArray = Object.values(sublevels)
+  //       const selectedSublevel = sublevelsAsArray[0]
+  //       await getSublevelChapters(selectedSublevel.id)
 
-        setSublevels(sublevels);
-        setSelectedSublevel(selectedSublevel);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          if (error.response && "error" in error.response.data) {
-            const data = error.response.data.error as TExampleResponseError;
-            return data.error;
-          }
-        }
-      } finally {
-        setSublevelsLoading(false);
-      }
-    },
-    [setSublevels, setSublevelsLoading, getAllChapterUser]
-  );
+  //       setSublevels(sublevels)
+  //       setSelectedSublevel(selectedSublevel)
+  //     } catch (error) {
+  //       if (error instanceof AxiosError) {
+  //         if (error.response && "error" in error.response.data) {
+  //           const data = error.response.data.error as TExampleResponseError
+  //           return data.error
+  //         }
+  //       }
+  //     } finally {
+  //       setSublevelsLoading(false)
+  //     }
+  //   },
+  //   [setSublevels, setSublevelsLoading, getAllChapterUser]
+  // )
 
   const getAllSublevels = useCallback(async () => {
     try {
-      const sublevels = await getSublevels();
-      const sublevelsAsArray = Object.values(sublevels);
-      const selectedSublevel = sublevelsAsArray[0];
-      await getSublevelChapters(selectedSublevel.id);
+      const sublevels = await getSublevels()
+      const sublevelsAsArray = Object.values(sublevels)
+      const selectedSublevel = sublevelsAsArray[0]
+      if (preferenceUser)
+        await getSublevelChapters(selectedSublevel.id, 1, preferenceUser)
+      else
+        await getSublevelChapters(selectedSublevel.id)
 
-      setSublevels(sublevels);
-      setSelectedSublevel(selectedSublevel);
+      setSublevels(sublevels)
+      setSelectedSublevel(selectedSublevel)
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response && "error" in error.response.data) {
-          const data = error.response.data.error as TExampleResponseError;
-          return data.error;
+          const data = error.response.data.error as TExampleResponseError
+          return data.error
         }
       }
     } finally {
-      setSublevelsLoading(false);
+      setSublevelsLoading(false)
     }
-  }, [setSublevels, setSublevelsLoading, getSublevelChapters]);
+  }, [setSublevels, setSublevelsLoading, getSublevelChapters, preferenceUser])
 
   useEffect(() => {
-    if (preferenceUser.length !== 0) getAllSublevelsUser(1, preferenceUser);
-    getAllSublevels();
-  }, [getAllSublevels, preferenceUser, getAllSublevelsUser]);
+    // if (preferenceUser.length !== 0) getAllSublevelsUser(1, preferenceUser)
+    getAllSublevels()
+  }, [getAllSublevels])
 
-  if (sublevelsLoading) return <Center h="100dvh">cargando...</Center>;
+  if (sublevelsLoading) return <Center h="100dvh">cargando...</Center>
 
   if (!sublevels || !selectedSublevel || !sublevelChapters)
-    return <Center h="100dvh">error...</Center>;
+    return <Center h="100dvh">error...</Center>
 
   return (
     <Flex direction="column" w="100%" mx="auto" maw={620} gap="sm" py={80}>
@@ -156,10 +161,14 @@ const Home = () => {
                   variant="transparent"
                   size="lg"
                   style={{ height: 200 }}
-                  onClick={() => {
-                    setSelectedSublevel(sublevel);
-                    getSublevelChapters(sublevel.id);
-                    close();
+                  onClick={async () => {
+                    setSelectedSublevel(sublevel)
+                    if (preferenceUser)
+                      await getSublevelChapters(sublevel.id, 1, preferenceUser)
+                    else
+                      await getSublevelChapters(sublevel.id)
+
+                    close()
                   }}
                 >
                   <Stack gap="1">
@@ -208,10 +217,10 @@ const Home = () => {
             (chapter.completedLessonsIds.length / chapter.lessons.length) *
             100
           ).toFixed(2)
-        );
+        )
         const currentLessonIndex = chapter.lessons.findIndex(
           (lesson) => !chapter.completedLessonsIds.includes(lesson.id)
-        );
+        )
 
         return (
           <Box
@@ -239,46 +248,21 @@ const Home = () => {
               ))}
             </Stepper>
           </Box>
-        );
+        )
       })}
 
       {/* <Button onClick={() => navigate("/lesson")}> Hola</Button> */}
     </Flex>
-  );
-};
+  )
+}
 
 type LessonProps = StepperStepProps & {
-  name: string;
-};
+  name: string
+}
 
 const Lesson = ({ name, ...props }: LessonProps) => {
-  const navigate = useNavigate();
-  const { exercisesContent, setExercisesContent } = useContext(
-    LayoutContext
-  ) as TLayoutContext;
-  type TExampleResponseError = {
-    error: string;
-  };
-  const getLessonExercises = useCallback(
-    async (lesson: string) => {
-      try {
-        console.log(lesson);
-        const exercises = await getExerciseByLesson(lesson);
-        if (!exercises) return `No se generaron los ejercicios`;
-        setExercisesContent(exercises);
-        console.log(exercises);
-        const options = Object.values(exercises.complete_with_options);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          if (error.response && "error" in error.response.data) {
-            const data = error.response.data.error as TExampleResponseError;
-            return data.error;
-          }
-        }
-      }
-    },
-    [setExercisesContent, exercisesContent]
-  );
+  const navigate = useNavigate()
+
   return (
     <Popover
       withArrow
@@ -312,9 +296,7 @@ const Lesson = ({ name, ...props }: LessonProps) => {
           <Button
             bg="ToreaBay.5"
             onClick={() => {
-              console.log("name", name),
-                getLessonExercises(name),
-                navigate("/lesson-exercise");
+              navigate(`/lesson-exercise/${name}`)
             }}
           >
             Iniciar Leccion
@@ -325,7 +307,7 @@ const Lesson = ({ name, ...props }: LessonProps) => {
         </Stack>
       </Popover.Dropdown>
     </Popover>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

@@ -10,10 +10,10 @@ import {
   Text,
   Title,
   Tooltip,
-} from "@mantine/core";
-import { Fragment, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Icon } from "~/components";
+} from "@mantine/core"
+import { Fragment, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Icon } from "~/components"
 
 const question = {
   type: "complete_with_options",
@@ -35,27 +35,29 @@ const question = {
       feedback: `Ça va ?" is used to ask how it's going. The "ç" is pronounced with an "s" sound.3`,
     },
   ],
-};
+}
 
-type TQuestionOptions = typeof question.options;
-type TQuestionOption = TQuestionOptions[number];
+type TQuestionOptions = typeof question.options
+type TQuestionOption = TQuestionOptions[number]
 
-const defaultAnswer = "________";
+const defaultAnswer = "________"
 
 type CompleteSentenceLessonProps = {
-  question: typeof question;
-  goToNextQuestion: () => void;
-};
+  question: typeof question
+  goToNextQuestion: () => void
+  setTotalScore: React.Dispatch<React.SetStateAction<number>>
+}
 
 const CompleteSentenceLesson = ({
   question,
   goToNextQuestion,
+  setTotalScore
 }: CompleteSentenceLessonProps) => {
   const [currentSelectedOption, setCurrentSelectedOption] =
-    useState<TQuestionOption>();
-  const [verificate, setVerificate] = useState(false);
-  const optionsDisabled = verificate && Boolean(currentSelectedOption);
-  const navigate = useNavigate();
+    useState<TQuestionOption>()
+  const [verificate, setVerificate] = useState(false)
+  const optionsDisabled = verificate && Boolean(currentSelectedOption)
+  const navigate = useNavigate()
 
   return (
     // <div></div>
@@ -81,7 +83,7 @@ const CompleteSentenceLesson = ({
           justifyContent: "center",
           //   gap: "10",
         }}
-        // bg="#fda1a1"
+      // bg="#fda1a1"
       >
         <Box>
           <Group justify="flex-end" mb="sm">
@@ -131,7 +133,7 @@ const CompleteSentenceLesson = ({
               <ActionIcon
                 disabled={optionsDisabled}
                 onClick={() => {
-                  setCurrentSelectedOption(undefined);
+                  setCurrentSelectedOption(undefined)
                 }}
                 variant="subtle"
                 aria-label="Settings"
@@ -145,7 +147,7 @@ const CompleteSentenceLesson = ({
                   key={option.content}
                   disabled={optionsDisabled}
                   onClick={() => {
-                    setCurrentSelectedOption(option);
+                    setCurrentSelectedOption(option)
                   }}
                 >
                   {option.content}
@@ -157,8 +159,9 @@ const CompleteSentenceLesson = ({
         <Button
           mt="lg"
           onClick={() => {
-            setVerificate(Boolean(currentSelectedOption?.content));
-            if (optionsDisabled) goToNextQuestion();
+            setVerificate(Boolean(currentSelectedOption?.content))
+            if (optionsDisabled) goToNextQuestion()
+            if (currentSelectedOption?.right) setTotalScore(prevScore => prevScore + 10)
           }}
         >
           {optionsDisabled ? "Siguiente" : "Comprobar"}
@@ -183,7 +186,7 @@ const CompleteSentenceLesson = ({
         </Box>
       )}
     </Flex>
-  );
-};
+  )
+}
 
-export default CompleteSentenceLesson;
+export default CompleteSentenceLesson

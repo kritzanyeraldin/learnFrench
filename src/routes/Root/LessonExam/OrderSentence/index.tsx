@@ -11,33 +11,35 @@ import {
   TextInput,
   Title,
   Tooltip,
-} from "@mantine/core";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Icon } from "~/components";
+} from "@mantine/core"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Icon } from "~/components"
 
 const question = {
   type: "order_sentence",
   content: "est / la / France / capitale / de / Paris",
   answer: "France est la capitale de Paris",
   feedback: "feedback",
-};
+}
 
 type OrderSentenceLessonProps = {
-  question: typeof question;
-  goToNextQuestion: () => void;
-};
+  question: typeof question
+  goToNextQuestion: () => void
+  setTotalScore: React.Dispatch<React.SetStateAction<number>>
+}
 
 const OrderSentenceLesson = ({
   question,
   goToNextQuestion,
+  setTotalScore
 }: OrderSentenceLessonProps) => {
-  const navigate = useNavigate();
-  const [buttonLabel, setButtonLabel] = useState<string>();
-  const [inputChange, setInputChange] = useState(false);
-  const [inputAnswerValue, setInputAnswerValue] = useState("");
+  const navigate = useNavigate()
+  const [buttonLabel, setButtonLabel] = useState<string>()
+  const [inputChange, setInputChange] = useState(false)
+  const [inputAnswerValue, setInputAnswerValue] = useState("")
   const isCorrect =
-    inputAnswerValue === question.answer ? "Correcto" : "Incorrecto";
+    inputAnswerValue === question.answer ? "Correcto" : "Incorrecto"
   return (
     // <div></div>
 
@@ -110,11 +112,12 @@ const OrderSentenceLesson = ({
         <Button
           mt="lg"
           onClick={() => {
+            if (inputAnswerValue === question.answer) setTotalScore(prevScore => prevScore + 10)
             if (inputAnswerValue) {
-              setButtonLabel("Siguiente");
-              console.log(inputAnswerValue);
+              setButtonLabel("Siguiente")
+              console.log(inputAnswerValue)
             }
-            if (buttonLabel === "Siguiente") goToNextQuestion();
+            if (buttonLabel === "Siguiente") goToNextQuestion()
           }}
         >
           {buttonLabel ?? "Comprobar"}
@@ -139,7 +142,7 @@ const OrderSentenceLesson = ({
         </Box>
       )}
     </Flex>
-  );
-};
+  )
+}
 
-export default OrderSentenceLesson;
+export default OrderSentenceLesson

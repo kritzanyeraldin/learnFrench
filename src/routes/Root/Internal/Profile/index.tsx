@@ -14,61 +14,53 @@ import {
   Stack,
   Text,
   Title,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { AxiosError } from "axios";
-import { useCallback, useContext, useState } from "react";
-import { Icon } from "~/components";
-import { LayoutContext, TLayoutContext } from "~/layouts/Internal/contexts";
-import { getGenerateUserContent } from "~/network/userContent/getGenerateUserContent";
+} from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
+import { AxiosError } from "axios"
+import { useCallback, useContext, useState } from "react"
+import { Icon } from "~/components"
+import { LayoutContext, TLayoutContext } from "~/layouts/Internal/contexts"
+import { getGenerateUserContent } from "~/network/userContent/getGenerateUserContent"
 
 const Profile = () => {
   const {
     isGeneratingContent,
+    preferenceUser,
     setIsGeneratingContent,
     setPreferencesSelected,
     setPreferenceUser,
-  } = useContext(LayoutContext) as TLayoutContext;
-  const [value, setValue] = useState("Clear me");
-  const [visible, { toggle }] = useDisclosure(false);
-  const [preferenceValue, setPreferenceValue] = useState<string | null>(null);
+  } = useContext(LayoutContext) as TLayoutContext
+  const [value, setValue] = useState("Clear me")
+  const [visible, { toggle }] = useDisclosure(false)
 
   type TExampleResponseError = {
-    error: string;
-  };
+    error: string
+  }
 
   const getUserContent = useCallback(async () => {
     try {
-      setIsGeneratingContent(true);
-      if (!preferenceValue) return "No selecciono una preferencia";
-      setPreferenceUser(preferenceValue);
-      const chapters = await getGenerateUserContent(preferenceValue, 1);
+      setIsGeneratingContent(true)
+      if (!preferenceUser) return "No selecciono una preferencia"
+      setPreferenceUser(preferenceUser)
+      const chapters = await getGenerateUserContent(preferenceUser, 1)
 
-      if (!chapters) return "No se generaron los capitulos";
-      setPreferencesSelected(true);
+      if (!chapters) return "No se generaron los capitulos"
+      setPreferencesSelected(true)
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response && "error" in error.response.data) {
-          const data = error.response.data.error as TExampleResponseError;
-          return data.error;
+          const data = error.response.data.error as TExampleResponseError
+          return data.error
         }
       }
     } finally {
-      setIsGeneratingContent(false);
+      setIsGeneratingContent(false)
     }
-  }, [preferenceValue, setIsGeneratingContent, setPreferencesSelected]);
+  }, [preferenceUser, setIsGeneratingContent, setPreferencesSelected])
 
-  const handleChipChange = (value: string | string[]) => {
-    if (typeof value === "string") {
-      setPreferenceValue(value);
-      // console.log(preferenceValue);
-    } else if (Array.isArray(value) && value.length > 0) {
-      setPreferenceValue(value[0]);
-      // console.log(preferenceValue);
-    } else {
-      setPreferenceValue(null);
-    }
-  };
+  const handleChipChange = (preferenceUser: string | string[]) => {
+    setPreferenceUser(preferenceUser as string)
+  }
 
   return (
     <Flex
@@ -82,9 +74,9 @@ const Profile = () => {
       align="center"
       justify="center"
       px="xs"
-      // h="100%"
-      // my="auto"
-      // mah={2000}
+    // h="100%"
+    // my="auto"
+    // mah={2000}
     >
       <Group>
         <Box
@@ -154,7 +146,7 @@ const Profile = () => {
           <Group mb="sm">
             <Icon type="start" size={25} />
             <Text size="xl">Personaliza tu contenido</Text>
-            <Button onClick={() => setPreferenceUser("")}>
+            <Button onClick={() => setPreferenceUser(undefined)}>
               Contenido General
             </Button>
           </Group>
@@ -165,7 +157,7 @@ const Profile = () => {
             a dominar tu francés personalizado.
           </Text>
           <Stack my="xl" p="xs">
-            <Chip.Group value={preferenceValue} onChange={handleChipChange}>
+            <Chip.Group value={preferenceUser} onChange={handleChipChange}>
               <Group justify="center">
                 <Chip value="Viajes">Viajes</Chip>
                 <Chip value="Negocios">Negocios</Chip>
@@ -181,7 +173,7 @@ const Profile = () => {
               mt={50}
               onClick={() => {
                 // setIsGeneratingContent(true);
-                getUserContent();
+                getUserContent()
                 // setTimeout(() => {
                 //   setIsGeneratingContent(false);
                 // }, 1500);
@@ -193,7 +185,7 @@ const Profile = () => {
         </Box>
       </Group>
     </Flex>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

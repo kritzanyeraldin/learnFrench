@@ -13,7 +13,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Icon } from "~/components";
 
-const FinishLesson = () => {
+type FinishLessonProps = {
+  score: number
+}
+
+const FinishLesson = (props: FinishLessonProps) => {
   const navigate = useNavigate();
   return (
     // <div></div>
@@ -54,13 +58,13 @@ const FinishLesson = () => {
           }
         />
         <Stack justify="center" align="center">
-          <Text>Puntaje: 30</Text>
+          <Text>Puntaje: {props.score}</Text>
           <Text>¡Felicitaciones!</Text>
           <Text>Ya puede iniciar la siguiente leccion</Text>
         </Stack>
       </Box>
       <Group mt="xl">
-        <Button onClick={() => navigate("/completeLesson")}>
+        <Button onClick={() => window.location.reload()}>
           Reiniciar Leccion
         </Button>
         <Button onClick={() => navigate("/home")}>Siguiente Leccion</Button>

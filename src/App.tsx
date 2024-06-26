@@ -59,7 +59,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        path: "/lesson-exercise",
+        path: "/lesson-exercise/:lessonName",
         element: <LessonExam />,
       },
 

@@ -26,6 +26,7 @@ const question = {
 type RepeatSentenceLessonProps = {
   question: typeof question;
   goToNextQuestion: () => void;
+  setTotalScore: React.Dispatch<React.SetStateAction<number>>
 };
 
 const textSpeechProcesing = (text: string, sentence: string) => {
@@ -45,6 +46,7 @@ const cleanSymbols = (cadena: string) => {
 const RepeatSentenceLesson = ({
   question,
   goToNextQuestion,
+  setTotalScore
 }: RepeatSentenceLessonProps) => {
   const navigate = useNavigate();
   const sentence = "Bonjour! ça va?";
@@ -186,6 +188,7 @@ const RepeatSentenceLesson = ({
         <Button
           mt="lg"
           onClick={() => {
+            if (validation) setTotalScore(prevScore => prevScore + 10)
             // navigate("/questionLesson");
             checkAnswer ? goToNextQuestion() : setCheckAnswer(true);
           }}

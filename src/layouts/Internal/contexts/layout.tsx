@@ -1,30 +1,30 @@
-import { createContext, useState } from "react";
+import { createContext, useState } from "react"
 
 export type TLayoutContext = {
-  isGeneratingContent: boolean;
-  setIsGeneratingContent: (value: boolean) => void;
-  exercisesContent: Exercises;
-  setExercisesContent: (value: Exercises) => void;
-  isPreferencesSelected: boolean;
-  setPreferencesSelected: (value: boolean) => void;
-  preferenceUser: string;
-  setPreferenceUser: (value: string) => void;
-};
+  isGeneratingContent: boolean
+  setIsGeneratingContent: (value: boolean) => void
+  exercisesContent: Exercises
+  setExercisesContent: (value: Exercises) => void
+  isPreferencesSelected: boolean
+  setPreferencesSelected: (value: boolean) => void
+  preferenceUser?: string
+  setPreferenceUser: (value: string | undefined) => void
+}
 
-export const LayoutContext = createContext<Partial<TLayoutContext>>({});
+export const LayoutContext = createContext<Partial<TLayoutContext>>({})
 
 export const LayoutProvider = (props: React.PropsWithChildren) => {
-  const [isGeneratingContent, setIsGeneratingContent] = useState(false);
-  const [exercisesContent, setExercisesContent] = useState("");
-  const [isPreferencesSelected, setPreferencesSelected] = useState(false);
-  const [preferenceUser, setPreferenceUser] = useState("");
+  const [isGeneratingContent, setIsGeneratingContent] = useState(false)
+  const [exercisesContent, setExercisesContent] = useState("")
+  const [isPreferencesSelected, setPreferencesSelected] = useState(false)
+  const [preferenceUser, setPreferenceUser] = useState<string>()
   return (
     <LayoutContext.Provider
       value={{
         isGeneratingContent,
         setIsGeneratingContent,
-        exercisesContent,
-        setExercisesContent,
+        // exercisesContent,
+        // setExercisesContent,
         isPreferencesSelected,
         setPreferencesSelected,
         preferenceUser,
@@ -33,5 +33,5 @@ export const LayoutProvider = (props: React.PropsWithChildren) => {
     >
       {props.children}
     </LayoutContext.Provider>
-  );
-};
+  )
+}

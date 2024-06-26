@@ -65,7 +65,7 @@ const SignUp = () => {
               <Text size="xs">Olvidaste tu contraseña?</Text>
             </Group> */}
 
-            <Button onClick={() => navigate("/level")}>Registrarse</Button>
+            <Button onClick={() => navigate("/home")}>Registrarse</Button>
           </Stack>
         </Box>
       </Group>
